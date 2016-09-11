@@ -1,0 +1,127 @@
+\svnInfo $Id: appendix.tex 15 2008-02-22 07:55:51Z kohlhase $
+\svnKeyword $HeadURL: https://svn.omdoc.org/repos/codeml/doc/spec/appendix.tex $
+\begin{appendix}
+
+\def\contentcat{Content}
+\def\cptoken{PresToken}
+\def\cpgroup{PresGroup}
+\def\cptext{PresText}
+\def\intercat{Inter}
+\chapter{Quick-Reference Table to the {\codeml} Elements}\label{sec:table}
+\def\tabelt#1#2#3#4#5{{#1}&\pageref{eldef:#1}&{#2}&{#3}&{#4}&{#5}\\\hline}
+{\scriptsize
+\begin{longtable}{|>{\tt}p{2.1cm}|l|l|>{\tt}p{2cm}|>{\tt}p{2cm}|>{\tt}p{3cm}|}\hline
+{\rm Element}& p. & Type  & {\rm Required}  & {\rm Optional} &  Content \\\hline
+             & &        & {\rm Attribs}  & {\rm Attribs} &         \\\hline\hline
+\tabelt{apply}\contentcat{}{id}{(apply| bind| bvar| ccv| ccb| ccsym)*}
+\tabelt{bind}\contentcat{}{id}{ccsym, bvar, (apply| bind| bvar| ccv| ccb| ccsym)}
+\tabelt{bvar}\contentcat{}{id}{ccv*}
+\tabelt{ccdef}\contentcat{export}{id}{ccsym, (apply| bind| bvar| ccv| ccb| ccsym)}
+\tabelt{ccsym}\contentcat{cd, name}{id}{EMPTY}
+\tabelt{ccv}\contentcat{name}{id}{EMPTY}
+\tabelt{cpb}\cptoken{}{id, xlink:*, type, variant, style, color, background}{CDATA}
+\tabelt{cpbr}\cpgroup{}{id, xlink:*}{CDATA}
+\tabelt{cpc}\cptext{}{}{cpt*}
+\tabelt{cpd}\cptext{}{}{cpt*}
+\tabelt{cpg}\cpgroup{}{id, xlink:*, open, close, separator, indent, breaks}  
+      {(cpg| cpb| cpo| cpi| cpbr| cptype| cpd| cpc |cpr | cpstyle)*}
+\tabelt{cpi}\cptoken{}{id, xlink:*, variant, style, color, background}{CDATA}
+\tabelt{cpo}\cptoken{}{id, xlink:*, type, variant, style, color, background}{CDATA}
+\tabelt{cpt}\cptext{}{variant, style, color, background}{CDATA}
+\tabelt{cptype}\cptoken{}{id, xlink:*, variant, style, color, background}{CDATA}
+\tabelt{pcode}\intercat{format}
+      {type, href,id, xlink:*, open,close, separator, indent, breaks}
+      {(cpg| cpb| cpo| cpi| cpbr| cptype| cpd| cpc |cpr | cpstyle)*}
+\tabelt{rawcode}\intercat{format}{type, href}{PCDATA}
+\tabelt{semantics}\intercat{}{}
+      {(apply| bind| bvar| ccv| ccb| ccsym, ccdef)*,(pcode| rawcode)*}
+\end{longtable}}
+
+\chapter{Quick-Reference Table to the {\codeml} Attributes}\label{sec:att-table}
+\def\atabelt#1#2#3#4{{#1}&{#2}&{#3}\\\hline&\multicolumn{2}{|p{9cm}|}{#4}\\\hline\hline}
+{\footnotesize\begin{longtable}{|>{\tt}p{2.5cm}|>{\tt}p{4cm}|>{\tt}p{5cm}|}\hline
+{\rm Attribute} & {\em element} & Values \\\hline\hline
+\atabelt{breaks}{cpg}{bob-bcb, ob-bcb, bo-bcb, o-bcb, bob-cb, ob-cb, bo-cb, o-cb,
+  bob-bc, ob-bc, bo-bc, o-bc, bob-c, ob-c, bo-c, o-c}
+  {SAY SOMETHING HERE, also about prioritized breaks}
+\atabelt{cd}{ccsym}{{\rm theory/module name}}{The name of a theory or a module
+  that exports this symbol}
+\atabelt{close}{cpg}{string}{The closing bracket of group of {\codeml} constructs
+  this is inserted into the presentation in place of the opneing tag of its
+  {\element{cpg}} element}
+\atabelt{color, background}{p-{\codeml}}{{\#{\sl rgb}},{\#{\sl rrggbb}} aqua,
+  black, blue, fuchsia, gray, green, lime, maroon, navy, olive, purple, red,
+  silver, teal, white, yellow}
+  {The color of the text representation or the background of a
+   presentation-{\codeml} element}
+\atabelt{exports}{ccdef}{string}{the name of a symbol defined by the {\element{ccdef}}
+  element}
+\atabelt{format}{pcode,rawcode}{}{The format, e.g. the programming language}
+\atabelt{id}{*}{}{a string that identifies the element}
+\atabelt{indent}{cpg}{number}{a factor for the default indentation
+  increment used by the presentation agent}
+\atabelt{name}{ccsym}{string}{The name the symbol}
+\atabelt{open}{cpg}{string}{The opening bracket of group of {\codeml} constructs;
+  this is inserted into the presentation in place of the opneing tag of its
+  {\element{cpg}} element}
+\atabelt{separator}{cpg}{string}{The separator bracket of group of {\codeml} constructs
+  this is inserted into the presentation between the children of its
+  {\element{cpg}} element}
+\atabelt{size}{p-{\codeml}}{small, normal, big, {\rm number}, {\rm v-unit}}
+  {The font size of the text representation of a presentation-{\codeml} element}
+\atabelt{type}{cpb, ccb}{number}{the type of the basic object}
+\atabelt{type}{cpo}{built-in, imported, defined}{the type of the basic object}
+\atabelt{variant}{p-{\codeml}}{normal, bold, italic, bold-italic, double-struck,
+  bold-fraktur, script, bold-script, fraktur, sans-serif, bold-sans-serif,
+  sans-serif-italic, sans-serif-bold-italic, monospace}
+  {The font variant of the text of a presentation-{\codeml} element}
+\atabelt{xlink:*}{cp*}{} {a crossreference to a semantically equivalent content
+  element; the value of {\attribute{xlink:xref}{presentation-CodeML}} (an URIRef)
+  specifies the element, the value of
+  {\attribute{xlink:type}{presentation-CodeML}} must be {\ttin{simple}} (it is
+  fixed in the DTD), and the {\attribute{xlink:role}{presentation-CodeML}} is a
+  fixed URL to a document that explains this link type.}
+\atabelt{xml:lang}{cpt}{ISO 639: en, de, it, ko, ...}{the language the text is
+  written in}
+\end{longtable}}
+
+\chapter{The {\codeml} RelaxNG Schema}\label{sec:rnc}
+We reprint the current version of the {\codeml} RelaxNG schema. The original can be found
+at {\url{https://svn.omdoc.org/repos/codeml/RelaxNG}}
+
+\section{The {\codeml} Schema Driver}
+\lstinputlisting[language=RNC,nolol]{../../RelaxNG/codeml.rnc}
+
+\section{The {\codeml} Module PRES}
+Module PRES introduces the presentation {\codeml} elements. 
+
+\lstinputlisting[language=RNC,nolol,
+                 index={cpg,cpb,cpo,cpi,cpbr,cptype,cpt,cpd,cpc,cpstyle}]
+                {../../RelaxNG/codeml-pres.rnc}
+
+\section{The {\codeml} Module CONT}
+Module CONT introduces the content {\codeml} elements. 
+
+\lstinputlisting[language=RNC,nolol,
+                 index={apply,bind,bvar,ccv,ccb,ccsym,ccdef,symbol,type}]
+                {../../RelaxNG/codeml-cont.rnc}
+
+\section{The {\codeml} Module INTER}
+Module INTER introduces elements for the interaction of content and presentation
+{\codeml} elements. The top-level {\element{code}} element is among then. 
+
+\lstinputlisting[language=RNC,nolol,index={semantics,pcode,rawcode,code}]
+{../../RelaxNG/codeml-inter.rnc}
+
+This schema includes the generic schema for Dublin Core Metadata and for the MARC relator 
+set, we include both of them for reference
+\subsection{The Dublin Core Schema}
+\lstinputlisting[language=RNC,nolol]{../../RelaxNG/dublincore.rnc}
+\subsection{The MARC Relators Schema}
+\lstinputlisting[language=RNC,nolol]{../../RelaxNG/MARCRelators.rnc}
+\end{appendix}
+              
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "codeml"
+%%% End: 

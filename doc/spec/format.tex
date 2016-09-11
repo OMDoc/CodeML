@@ -1,0 +1,712 @@
+\svnInfo $Id: format.tex 15 2008-02-22 07:55:51Z kohlhase $
+\svnKeyword $HeadURL: https://svn.omdoc.org/repos/codeml/doc/spec/format.tex $
+\chapter{{\codeml} Elements}\label{chap:codeml}
+
+The {\codeml} format is loosely modeled after the {\mathml}
+format~\cite{CarIon:MathML01} format. It has three kinds of elements, which we
+will specify in the rest of the section: {\indextoo{presentation}}
+elements\index{element!presentation} (section~\ref{sec:presentation}), {\indextoo{content}}
+elements\index{element!content} (section~\ref{sec:content}), and {\indextoo{integration}}
+elements\index{element!integration} (section~\ref{sec:integration}).
+
+Since the {\codeml} fragment is intended as a module for the
+{\omdoc}~\cite{Kohlhase:omfmd01} format, it only needs to be concerned with
+representing the actual code and can re-use the library- and theory levels of
+{\omdoc}\ednote{I hope}.
+
+The {\codeml} presentation elements are used to mark up the syntactic structure of
+program source code. They classify and group sub-strings of code in arbitrary
+programming languages by their syntactic function. As a consequence, generic tools
+can perform added-value services, without requiring parsers for the
+code.\ednote{continue, say something about content, interaction.}
+
+\section{Presentation Elements}\label{sec:presentation}
+
+In this section we will introduce the {\codeml} presentation elements, which can
+be used to classify and group sub-strings of program code by their syntactic
+function. 
+
+All presentation {\codeml} elements have the following atrributes in common: 
+\begin{description}
+\item[\attribute{xlink:xref}{presentation-CodeML}] This optional attribute
+  specifies a cross-reference to a content-{\codeml} element that corresponds to
+  the code contained in this element. This attribute (together with the next two)
+  conforms to the W3C {\xlink} recommendation~\cite{DeRMal:xlink01} and is
+  recognized by many {\xml} applications. 
+\item[\attribute{xlink:type}{presentation-CodeML}] This attribute must have the
+  value {\attval{simple}{xlink:type}{presentation-CodeML}}, according to the
+  {\xlink} recommendation. It specifies that
+  {\attribute{xlink:xref}{presentation-CodeML}} is a so-called {\indextoo{simple
+      link}}\index{link!simple}, like the {\element{a}} element from {\html}. The
+  DTD (see appendix~\ref{sec:dtd}) fixes this attribute, so in {\codeml} documents
+  with DTD, it need not be explicitly specified.
+\item[\attribute{xlink:role}{presentation-CodeML}] This attribute specifies the
+  role of link established by the {\attribute{xlink:xref}{presentation-CodeML}} as
+  a semantic equivalence. Like the {\attribute{xlink:type}{presentation-CodeML}},
+  the DTD fixes its value.
+\end{description}
+
+We will use the code fragment for a {\java} implementation of the {\ttin{find}}
+procedure in {\mylstref{find-raw}} as a running example in this section.  The
+presentation-{\codeml} equivalent of this presented in
+{\mylstref{find-presentation}}.
+
+\begin{lstlisting}[float,frame=lines,label=lst:find-raw,
+   language=java,numbers=none,
+   caption={A java code snippet},
+   index={find}]
+public int find (int x) {
+    if (s[x] < 0) return x;
+    return  find (s[x]);
+    } 
+\end{lstlisting}
+
+\begin{lstlisting}[float,frame=lines,label=lst:find-presentation,
+   caption={The {\codeml} presentation for the code snippet in {\mylstref{find-raw}}},
+   index={[2]cpg,cpo,cptype,code}]
+<cpg> 
+  <cpg>
+    <cpo>public</cpo><cptype>int</cptype><cpo>find</cpo>
+    <cpg open="(" close=")"><cptype>int</cptype><cpi>x</cpi></cpg>
+  </cpg>
+  <cpg open="{" close="}" breakO="hard">
+    <cpo>if</cpo>
+    <cpg open="(" close=")">
+      <cpo>s</cpo>
+      <cpg open="[" close="]"><cpi>x</cpi></cpg>
+      <cpo>&lt;</cpo>
+      <cpb type="number">0</cpb>
+    </cpg>
+    <cpg close=";" Cbreak="hard"><cpo>return</cpo><cpi>x</cpi></cpg>
+    <cpg close=";" Cbreak="hard">
+      <cpo>return</cpo>
+      <cpg>
+        <cpo>find</cpo>
+        <cpg open="(" close=")">
+          <cpo>s</cpo>
+          <cpg open="[" close="]"><cpi>x</cpi></cpg>
+        </cpg>
+      </cpg>
+    </cpg>
+  </cpg>
+</cpg>
+\end{lstlisting}
+
+\subsection{Token Elements}\label{sec:pres:token}
+
+Token elements in presentation markup are broadly intended to represent the
+smallest code fragments which carry meaning. Thus character data in {\codeml}
+markup is only allowed to occur as part of the content of token elements. The only
+exception is whitespace between elements, which is ignored. Token elements can
+contain any sequence of zero or more Unicode characters.
+
+Token elements should be rendered as their content (i.e. in the visual case, as a
+closely-spaced horizontal row of standard glyphs for the characters in their
+content). Rendering algorithms should also take into account the style attributes
+as described below, and modify surrounding spacing by rules or attributes specific
+to each type of token element.
+
+{\codeml} has the following three elements to classify token elements; all of
+these can contain arbitrary unicode text\footnote{and the {\xml} elements
+  specified by changing the {\ttin{\&cpt.extra.content;}} parameter entity either
+  in the internal subset of the DOCTYPE declaration or in the DTD driver}
+\begin{description}
+\item[\eldef{cpb}] for {\indextoo{basic object}s}\index{object!basic}. This
+  element should be used for values like {\indextoo{number}s},\ednote{Maybe better
+    call it {\tt{cpv}}?}. It has the optional attribute {\attribute{type}{cpb}},
+  which can take the values {\attval{number}{type}{cpb}}\ednote{what else?} to
+  classify its contents.
+\item[\eldef{cpo}] for {\indextoo{operator}s}, i.e. names of symbols with a fixed
+  meaning. These include the {\indextoo{built-in}}\index{operator!built-in}
+  operators of the programming language, functions that are
+  {\indextoo{imported}}\index{operator!imported} from a {\indextoo{library}}, and
+  {\indextoo{defined}}\index{operator!defined} ones.  The optional
+  {\attribute{type}{cpo}} supplies the values {\attval{built-in}{type}{cpo}},
+  {\attval{imported}{type}{cpo}}, and {\attval{defined}{type}{cpo}} for these
+  cases.\ednote{are there more? yes: recursive-call and definiiens}
+\item[\eldef{cpi}] for {\indextoo{identifiers}} in the programming language,
+  these are usually variable names\ednote{what else?}.
+\item[\eldef{cptype}] for {\indextoo{data type}s}\index{type!data}\ednote{do we
+    want this as a separate thing, or can we subsume them into {\element{cpo}}}.
+\end{description}
+The classification supported by these elements can be used by rendering engines
+e.g. to highlight\index{highlighting}\index{code!highlighting} or
+{\indextoo{color}}\index{code!coloring} program code.
+
+\begin{myfig}{token}{The {\codeml} Token Elements}
+  \quicktable{\tokentable{}}
+\end{myfig}
+
+\subsection{Token Element Attributes}\label{sec:token-attributes}
+Until full {\indextoo{Unicode}} support is widely available, {\codeml} provides
+four code style attributes (see {\myfigref{style-attrib}}). These attributes are
+valid on all presentation token elements and on no other elements except
+{\element{cstyle}}.
+
+\begin{myfig}{style-attrib}{{\codeml} Style Attributes}
+\begin{tabular}{|p{2cm}|p{7.5cm}|l|}\hline
+Name &  values & default\\\hline\hline
+{\attribute{variant}{p-{\codeml}}} 
+   & {\attval{normal}{variant}{p-{\codeml}}}, 
+     {\attval{bold}{variant}{p-{\codeml}}}, 
+     {\attval{italic}{variant}{p-{\codeml}}}, 
+     {\attval{bold-italic}{variant}{p-{\codeml}}}, 
+     {\attval{double-struck}{variant}{p-{\codeml}}}, 
+     {\attval{bold-fraktur}{variant}{p-{\codeml}} }, 
+     {\attval{script}{variant}{p-{\codeml}}}, 
+     {\attval{bold-script}{variant}{p-{\codeml}}}, 
+     {\attval{fraktur}{variant}{p-{\codeml}}}, 
+     {\attval{sans-serif}{variant}{p-{\codeml}}}, 
+     {\attval{bold-sans-serif}{variant}{p-{\codeml}}},
+     {\attval{sans-serif-italic}{variant}{p-{\codeml}}}, 
+     {\attval{sans-serif-bold-italic}{variant}{p-{\codeml}}}, 
+     {\attval{monospace}{variant}{p-{\codeml}}} 
+   & normal\\\hline
+{\attribute{size}{p-{\codeml}}} 
+   & {\attval{small}{size}{p-{\codeml}}}, 
+     {\attval{normal}{size}{p-{\codeml}}}, 
+     {\attval{big}{size}{p-{\codeml}}}, 
+     {\attval{number}{variant}{p-{\codeml}}},
+     {\attval{v-unit}{variant}{p-{\codeml}}}
+   & inherited\\\hline
+{\attribute{color}{p-{\codeml}}}, {\attribute{background}{p-{\codeml}}}    
+   & {\attval{{\#}rgb}{color,background}{p-{\codeml}}}, 
+     {\attval{{\#}rrggbb}{color,background}{p-{\codeml}}}, 
+     {\attval{aqua}{color,background}{p-{\codeml}}},
+     {\attval{black}{color,background}{p-{\codeml}}},
+     {\attval{blue}{color,background}{p-{\codeml}}},
+     {\attval{fuchsia}{color,background}{p-{\codeml}}},
+     {\attval{gray}{color,background}{p-{\codeml}}},
+     {\attval{green}{color,background}{p-{\codeml}}},
+     {\attval{lime}{color,background}{p-{\codeml}}},
+     {\attval{maroon}{color,background}{p-{\codeml}}},
+     {\attval{navy}{color,background}{p-{\codeml}}},
+     {\attval{olive}{color,background}{p-{\codeml}}},
+     {\attval{purple}{color,background}{p-{\codeml}}},
+     {\attval{red}{color,background}{p-{\codeml}}},
+     {\attval{silver}{color,background}{p-{\codeml}}},
+     {\attval{teal}{color,background}{p-{\codeml}}},
+     {\attval{white}{color,background}{p-{\codeml}}},
+     {\attval{yellow}{color,background}{p-{\codeml}}}
+     & inherited\\\hline
+  \end{tabular}
+\end{myfig}
+ 
+The {\indextoo{style attribute}s}\index{attribute!style} define logical classes of
+token elements. Each class is intended to correspond to a collection of
+typographically-related symbolic tokens that have a meaning within a given math
+expression, and therefore need to be visually distinguished and protected from
+inadvertent document-wide style changes which might change their meanings.
+
+When {\codeml} rendering takes place in an environment where CSS is available, the
+style attributes can be viewed as predefined selectors for CSS style rules. When
+CSS is not available, it is up to the internal style mechanism of the rendering
+application to visually distinguish the different logical classes.
+
+Token elements also permit {\attribute{id}{*}}, {\attribute{class}{*}} and
+{\attribute{style}{*}} attributes for compatibility with style sheet
+mechanisms.\ednote{rethink; put this into DTD}
+
+Since {\codeml} expressions are often embedded in a textual data format such as
+XHTML, the surrounding text and the {\codeml} must share rendering attributes such
+as font size, so that the renderings will be compatible in style. For this reason,
+most attribute values affecting text rendering are inherited from the rendering
+environment, as shown in the `default' column in the table above. 
+
+The {\attribute{color}{p-{\codeml}}} attribute controls the color in which the
+content of tokens is rendered. Additionally, when inherited from
+{\element{cstyle}}, it controls the color of all other drawing by {\codeml}
+elements.
+
+The values of {\attribute{color}{p-{\codeml}}}, and
+{\attribute{background}{p-{\codeml}}} can be specified as as an {\html} color
+name\footnote{Note that the color name keywords are not case-sensitive, unlike
+  most keywords in {\codeml} attribute values for compatibility with CSS and
+  {\html}.}  or as a string consisting of '\#' followed without intervening
+whitespace by either 1-digit or 2-digit hexadecimal values for the red, green, and
+blue components, respectively, of the desired color, with the same number of
+digits used for each component (or as the keyword `transparent' for background).
+The hexadecimal digits are not case-sensitive. The possible 1-digit values range
+from 0 (component not present) to F (component fully present), and the possible
+2-digit values range from 00 (component not present) to FF (component fully
+present), with the 1-digit value x being equivalent to the 2-digit value xx
+(rather than x0).
+
+The color syntax described above is a subset of the syntax of the color and
+background-color properties of CSS. The background-color syntax is in turn a
+subset of the full CSS background property syntax, which also permits
+specification of (for example) background images with optional repeats. The more
+general attribute name background is used in {\codeml} to facilitate possible
+extensions to the attribute's scope in future versions of {\codeml}.
+
+\subsection{Grouping, Indenting and Breaking}\label{sec:pres:grouping}
+
+One of the most important {\codeml} uses of the information in presentation
+{\codeml} markup is to indent\index{indentation} and linebreak\index{linebreaking}
+program code. Conventionally, this is hardcoded by {\indextoo{tabstop}s} and
+{\indextoo{space}s} in the source code, which is sufficient for program
+development, but carries implicit assumptions about screen size and output format,
+which are not sustainable in the Internet and ubitiquos computing age (just
+imagine debugging lisp code on a palmtop). Therefore {\codeml} relies on the
+concept of ``semantic'' concept of code grouping to convey the syntactical
+structure of programming language expressions, and relies on style sheets or
+presentation engine to translate this into visual aids, such as indentation, or
+folding. 
+
+{\codeml} uses the {\eldef{cpg}} element to group program code fragments, as a
+consequence, it can contain any (number of) presentation {\codeml} elemements.
+Since grouping is often supported by bracketing structures in programming langues,
+the {\element{cpg}} element has three optional attributes {\attribute{open}{cpg}}
+and {\attribute{close}{cpg}} which specify the {\indextoo{opening}} and
+{\indextoo{closing}} {\indextoo{brackets}} used the presented code. The children
+of the group are separated by single spaces, unless this is overridden by setting
+the optional {\attribute{separator}{cpg}} attribute to something else (e.g. a
+linefeed).  Furthermore, the {\element{cpg}} element has an optional
+{\attribute{indent}{cpg}} attribute, which allows the author to specify a factor
+for the default indentation increment used by the presentation agent. Finally, the
+{\element{cpg}} element has six attributes that control the linebreaking. They
+come in three groups of pairs one each for opening, closing brackets and
+separators. {\attribute{breakO}{cpg}} specifies the break before the opening
+bracket, and {\attribute{Obreak}{cpg}} a break after it. Attributes
+{\attribute{breakC}{cpg}} and {\attribute{Cbreak}{cpg}} to the analogous for the
+closing brackets, while {\attribute{breakS}{cpg}} and {\attribute{Sbreak}{cpg}}
+address the breaks for the separators\footnote{Note that we cannot specify a
+  breaking strategy for individual separator positions; all are treated alike.}.
+Currently, {\codeml} does not restrict the values of these attributes leaving the
+specifics to applications; we suggest using the keyword {\ttin{hard}} for ``hard''
+(unconditional) {\indextoo{break}s}. A system of numbers might be used for
+{\index{prioritized break}s}.\ednote{give/discuss examples}
+
+Even if the ultimate linebreaking of the code presentation has to be determined by
+the presentation agent, {\codeml} provides the empty {\eldef{cpbr}} element that
+allows the author to force a line break even if the presentation agent does not
+see the need for one on the basis of the grouping information.\ednote{do we really
+  need this}
+\begin{myfig}{group}{The {\codeml} Grouping Elements}
+  \quicktable{\grouptable{}}
+\end{myfig}
+
+\subsection{Descriptive Text and Comments}\label{sec:pres:text}
+
+Many programs contain descriptive text, either as documentation, comments, or (in
+the case of pseudo-code) even as part of the ``programming language''. {\codeml}
+provides the elements {\eldef{cpd}} for {\indextoo{descriptive
+    text}}\index{text!descriptive} and {\eldef{cpc}} for {\indextoo{comment}s}.
+Both elements can contain a {\indextoo{multilingual
+    group}}\index{group!multilingual} of {\eldef{cpt}} elements that contain the
+actual natural language text. 
+
+\begin{myfig}{text}{The {\codeml} Text Elements}
+  \quicktable{\texttable{}}
+\end{myfig}
+
+{\element{cpt}} elements have an {\ttin{xml:lang}} attribute that specifies the
+language they are written in. Thus using multilingual groups\index{multilingual
+  support}\index{support!multilingual}\index{languages!multiple} of
+{\element{cmp}} elements with different languages can promote {\codeml}
+internationalization.  Conforming with the {\xml} recommendation, we use the
+{\indextoo{ISO 639}} two-letter {\indextoo{country code}s}\index{code!country}
+({\ttin{en}}$\;\widehat=\;$English, {\ttin{de}}$\;\widehat=\;$German,
+{\ttin{fr}}$\;\widehat=\;$French, {\ttin{nl}}$\;\widehat=\;$Dutch,\ldots).  This
+optional attribute has the default ``{\attval{en}{xml:lang}{*}}'', so that if no
+{\attribute{xml:lang}{*}} is given, then English is assumed. Of course it is
+forbidden to have more than one {\element{cpt}} per value of
+{\attribute{xml:lang}{cpt}} per {\element{cpd}} or {\element{cpc}} element,
+moreover, {\element{cpt}}s that are siblings must be translations of each other.
+
+\begin{lstlisting}[float,frame=lines,label=lst:find-pseudo,escapechar=\%,
+   caption={Pseudo-code for the code snippet in {\mylstref{find-raw}}},
+   index={[2]cpc,cpd,cpt}]
+ <code format="pseudo-code">
+ <cpg>
+   <cpo>procedure</cpo>
+   <cpg indent="0">
+     <cpi>find</cpi>
+     <cpg open="(" close=")"><cpi>x</cpi></cpg>
+     <cpg ="break" breaks="bo-c">
+       <cpg>
+         <cpo>if</cpo>
+         <cpd>%\label{lst-qr:lst:find-pseudo:cpd}%
+           <cpt>s[x] is negative</cpt>
+           <cpt xml:lang="de">s[x] ist negativ</cpt>
+         </cpd>
+       </cpg>
+       <cpg>
+         <cpo>then</cpo>
+         <cpo>return</cpo>
+         <cpi>x</cpi>
+         <cpc>%\label{lst-qr:lst:find-pseudo:cpc}%
+           <cpt>we are at the root</cpt>
+           <cpt xml:lang="de">Wir sind in der Wurzel</cpt>
+         </cpc>
+       </cpg>
+       <cpg>
+         <cpo>otherwise</cpo>
+         <cpo>return</cpo>
+         <cpi>s[x]</cpi>
+         <cpc>
+           <cpt>way to go!</cpt>
+           <cpt xml:lang="de">auf gehts!</cpt>
+         </cpc>
+       </cpg>
+     </cpg>
+   </cpg>
+ </cpg>
+</code>
+\end{lstlisting}
+
+Let us consider an example: {\mylstref{find-pseudo}} shows some
+presentation-{\codeml} for our running example from {\mylstref{find-raw}}. This
+example is mildly internationalized: in line {\ref{lst-qr:lst:find-pseudo:cpd}},
+we have a {\element{cpd}} element and in line {\ref{lst-qr:lst:find-pseudo:cpc}},
+we have a comment; both English and German text. A suitable presentation engine
+could generate {\indextoo{localized}} presentations like the ones in 
+{\myfigref{find-pseudo-en-de}} from the source in
+Listing{\ref{lst:find-pseudo}}.\ednote{can the text contain code snippets again? Update
+  the DTD and the examples to allow for that.}
+
+\begin{myfig}{find-pseudo-en-de}{Multi-lingual Pseudo-code presentation 
+    from {\mylstref{find-pseudo}}} \def\bu#1{{\bf\underline{#1}}}
+  \fbox{\begin{minipage}{9cm}
+      {\bu{procedure}} find (x) \\
+      \hspace*{2em}    {\bu{if}} {\sf s[x] is negative}\\
+      \hspace*{4em}     {\bu{then}} {\bu{return}} x\hfill ({\sl we are at the root})\\
+      \hspace*{4em} {\bu{otherwise}} {\bu{return}} s[x]\hfill ({\em way to go!})
+\end{minipage}}
+\fbox{\begin{minipage}{9cm}
+{\bu{procedure}} find (x) \\
+\hspace*{2em}    {\bu{if}} {\sf s[x] ist negativ}\\
+\hspace*{4em}     {\bu{then}} {\bu{return}} x\hfill ({\sl Wir sind an der Wurzel})\\
+\hspace*{4em}     {\bu{otherwise return}} s[x]\hfill ({\sl auf gehts!})
+\end{minipage}}
+\end{myfig}
+
+\subsection{Raw Code}\label{sec:raw}
+
+To facilitate migration from raw code and to allow for partial markup, {\codeml}
+allows to include\issue{do we also want to allow this in content?} {\indextoo{raw
+    code}}\index{code!raw} in the {\element{cpr}} element\issue{collapse this with
+  the {\element{rawcode}} element?}.\ednote{table?}
+
+\subsection{Style Change}\label{sec:style}
+
+The {\element{cstyle}} element is used to make style changes that affect the
+rendering of its contents. {\element{cstyle}} can be given any attribute accepted
+by any {\codeml} presentation element provided that the attribute value is inherited,
+computed or has a default value; presentation element attributes whose values are
+required are not accepted by the mstyle element. In addition mstyle can also be
+given certain special attributes listed below.
+
+The {\element{cstyle}} element accepts any number of arguments. If this number is
+not 1, its contents are treated as a single `inferred {\element{cpg}}' formed from
+all its arguments.
+
+Loosely speaking, the effect of the {\element{cstyle}} element is to change the
+default value of an attribute for the elements it contains. Style changes work in
+one of several ways, depending on the way in which default values are specified
+for an attribute.  The cases are:\ 
+\begin{itemize}
+\item Some attributes, such as {\attribute{size}{p-{\codeml}}} or
+  {\attribute{color}{p-{\codeml}}}, are inherited from the surrounding context when
+    they are not explicitly set.  Specifying such an attribute on an
+    {\element{cstyle}} element sets the value that will be inherited by its child
+    elements. Unless a child element overrides this inherited value, it will pass
+    it on to its children, and they will pass it to their children, and so on. But
+    if a child element does override it, the new (overriding) value will be passed
+    on to that element's children, and then to their children, etc, until it is
+    again overridden.
+  \item Other attributes, such as {\attribute{variant}{p-{\codeml}}}, have default
+    values that are not normally inherited. That is, if the
+    {\attribute{variant}{p-{\codeml}}} attribute is not set on an element, it will
+    normally use the default value of {\attval{normal}{variant}{p-{\codeml}}},
+    even if it was contained in a larger element that set this attribute to a
+    different value. For attributes like this, specifying a value with an
+    {\element{cstyle}} element has the effect of changing the default value for
+    all elements within its scope.  The net effect is that setting the attribute
+    value with {\element{cstyle}} propagates the change to all the elements it
+    contains directly or indirectly, except for the individual elements on which
+    the value is overridden. Unlike in the case of inherited attributes, elements
+    that explicitly override this attribute have no effect on this attribute's
+    value in their children.
+\end{itemize}
+
+Note that attribute values inherited from an {\element{cstyle}} in any manner
+affect a given element in the {\element{cstyle}}'s content only if that attribute
+is not given a value in that element's start tag. On any element for which the
+attribute is set explicitly, the value specified on the start tag overrides the
+inherited value.
+
+As stated above, {\element{style}} accepts all attributes of all {\codeml}
+presentation elements which do not have required values. That is, all attributes
+which have an explicit default value or a default value which is inherited or
+computed are accepted by the mstyle element. 
+
+\section{Content Elements}\label{sec:content}
+
+The content fragment of {\codeml} is used to represent the abstract structure of
+the algorithm underlying the program and unambiguously identify the symbols used
+in it, independently of the surface form. We will again use the {\java} code
+fragment for the {\ttin{find}} procedure in {\mylstref{find-raw}} as a running
+example in this section. The content-{\codeml} equivalent of this is given in 
+{\mylstref{find-content}}.
+
+\begin{lstlisting}[float,frame=lines,label=lst:find-content,escapechar=\%,
+   caption={The {\codeml} content for the code snippet in {\mylstref{find-raw}}},
+   index={[2]ccdef,symbol,type,apply,bind,bvar,ccb,ccv}]
+ <ccdef export="find">
+   <ccsym cd="java.dec" name="public-type-function"/>
+   <apply>
+     <ccsym cd="java.types" name="funtype"/> %\label{lst-cr:lst:find-content:ccsym}%
+     <ccsym cd="java.types" name="int"/>
+     <ccsym cd="java.types" name="int"/>
+   </apply>
+   <bind>
+     <ccsym cd="java.proc" name="function"/> %\label{lst-cr:lst:find-content:ccsym-bind}%
+     <bvar><ccv name="x"/></bvar>            %\label{lst-cr:lst:find-content:bvar}%
+     <apply>                                 %\label{lst-cr:lst:find-content:body}%
+       <ccsym cd="java.control" name="if"/>
+       <apply>
+         <ccsym cd="java.arith" name="less"/>
+         <apply>
+           <ccsym cd="java.array" name="select"/>
+           <ccv name="s"/>                   %\label{lst-cr:lst:find-content:ccv}%
+           <ccv name="x"/>
+         </apply>
+         <ccb type="number">0</ccb>          %\label{lst-cr:lst:find-content:ccb}%
+       </apply>
+       <apply>
+         <ccsym cd="java.proc" name="return"/>
+         <ccv name="x"/>
+       </apply>
+       <apply>
+         <ccsym cd="java.proc" name="return"/>
+         <apply>
+           <ccsym cd="union-find" name="find"/>
+           <apply>
+             <ccsym cd="java.array" name="select"/>
+             <ccv name="s"/>
+             <ccv name="x"/>
+           </apply>
+         </apply>
+       </apply>
+     </apply>
+   </bind>
+ </ccdef>
+\end{lstlisting}
+
+The {\codeml} content elements only have the common {\codeml}
+attributes\ednote{crossref, define them somewhere above} attributes, and an
+optional {\attribute{id}{c-{\codeml}}} attribute, which can be used for
+cross-referencing by by the {\ttin{xlink}} attributes by the
+presentation-{\codeml} elements (see the introduction to
+section~\ref{sec:presentation} and section~\ref{sec:integration}).
+
+\begin{myfig}{content}{The {\codeml} Content Elements}
+  \quicktable{\contenttable{}}
+\end{myfig}
+
+\subsection{Token Elements}\label{sec:content:token}
+
+The {\codeml} {\indextoo{token element}s}\index{element token} are similar in
+nature to the {\openmath} elements, we have:
+\begin{description}
+\item[{\eldef{ccv}}] for {\indextoo{variable}s}: this element has a required
+  attribute {\attribute{name}{ccv}} for the name of the variable. Since for
+  variables the name determines the content, this element is empty.
+\item[{\eldef{ccsym}}] for {\indextoo{defined symbol}s}\index{symbol!defined}:
+  this element is empty as well and has two required attributes
+  {\attribute{name}{ccsym}} for the name of the symbols, and
+  {\attribute{cd}{ccsym}} for the {\index{content
+      dictionary}}\index{dictionary!content} that describes, implements, or
+  defines the meaning of the symbol.  These two attributes totally determine the
+  content of the symbol (by reference to a defining document\ednote{say some more
+    about the module system, ...  later}), so the {\element{ccsym}} element is
+  empty.
+\item[{\eldef{ccb}}] that contains {\indextoo{basic data}}\index{data!basic},
+  such as {\indextoo{number}s}, {\indextoo{string}s}, etc. The type of this data
+  can be specified in the optional attribute {\attribute{type}{ccb}}\ednote{do we
+    want to enumerate the basic data types, or leave them open for the user?}
+\end{description}
+
+\subsection{Complex Elements}\label{sec:content:complex}
+
+Content-{\codeml} knows the follwing three {\indextoo{complex
+    element}s}\index{element complex}, which allow to combine content-{\codeml}
+expressions to larger ones.
+
+\begin{description}
+\item[{\eldef{apply}}] for (function/procedure)
+  application\index{function!application}\index{application!function}.  This
+  element is a constructor for function- and {\indextoo{procedure
+      call}s}\index{function call}\index{call!function/procedure}: The first child
+  is interpreted as a function or procedure and is given the remaining children of
+  the {\element{apply}} element as argument.
+\item[{\eldef{bind}}] this {\indextoo{binding
+      constructor}}\index{contructor!binding} {\element{bind}} is used to
+  represent {\indextoo{binding}} and {\indextoo{abstraction}} constructions. It is
+  primarily used in function and {\indextoo{procedure
+      definition}s}\index{function!definition}\index{definition!function/procedure}.
+  The first child of this a {\codeml} binding expression must be a
+  {\element{ccsym}} element, which defines a binding symbol. The second child must
+  be a {\eldef{bvar}} element, which contains {\element{ccv}} elements for all
+  the {\indextoo{formal parameter}s}\index{parameter!formal} of the binding. The
+  third child of the {\element{bind}} element is known as the {\indextoo{body}}.
+  It is an arbitrary content-{\codeml} element, which may (but in general need
+  not) contain occurrences of the bound variables. Note that the bound variables
+  specified in the {\element{bvar}} element only have or {\index{scope}} in the
+  body. An occurrence of an {\element{ccv}} element outside the body is
+  semantically a different variable, even if it carries the same name.
+\item[{\eldef{ccdef}}] for definitions and declarations: In contrast to the
+  {\element{bind}} element, this one defines a set of symbols to be visible
+  outside its body: Its required {\attribute{exports}{ccdef}} attribute specifies
+  a set of symbol names as a whitespace-separated list of names. 
+  
+  The first child of the {\element{ccdef}} element is a {\indextoo{declaration
+      symbol}}\index{symbol!declaration} (specified as a {\element{ccsym}} element
+  that specifies the {\indextoo{definition schema}}\index{schema!definition}.  For
+  instance, in the {\element{ccdef}} element in {\mylstref{find-content}},
+  this is the symbol
+  \begin{quote}
+    {\lstinline[basicstyle=\small]{<ccsym cd="java.dec" name="public-type-function"/>}}     
+  \end{quote}
+  that specifies that the second child is a {\indextoo{type}} (the type of the
+  {\indextoo{defined symbol}}\index{symbol!defined}), and the third child is a
+  representation of a function (in this case via a {\element{bind}} element).
+\end{description}
+
+\section{Interaction of Content and Presentation}\label{sec:integration}
+
+\begin{newpart}{copied from MathML, rework heavily}
+In the last sections we have seen two styles of markup for program code: 
+
+{\em {\indextoo{Presentation markup}}\index{markup!presentation}} captures
+{\indextoo{notational structure}}\index{structure!notational}. It encodes the
+notational structure of an expression in a sufficiently abstract way to facilitate
+rendering to various media. It does this by providing information such as
+structured grouping of expression parts, classification of symbols, etc.
+
+Presentation markup does not directly concern itself with the mathematical
+structure or meaning of the code. In many situations, notational structure and
+mathematical structure are closely related, so a sophisticated processing
+application may be able to heuristically infer mathematical meaning from
+notational structure, provided sufficient context is known. However, in practice,
+the inference of mathematical meaning from mathematical notation must often be
+left to the reader. As a consequence, employing presentation tags alone may limit
+the ability to re-use a {\codeml} object in another context, especially evaluation
+by external applications.
+
+{\em {\indextoo{Content markup}}\index{markup!content}} captures {\indextoo{mathematical
+    structure}}\index{structure!mathematical}. It encodes mathematical structure
+in a sufficiently regular way in order to facilitate the assignment of
+mathematical meaning to an expression by application programs.  Though the details
+of mapping from mathematical expression structure to mathematical meaning can be
+extremely complex, in practice, there is wide agreement about the conventional
+meaning of many basic mathematical constructions.  Consequently, much of the
+meaning of a content expression is easily accessible to a processing application,
+independently of where or how it is displayed to the reader. In many cases,
+content markup could be cut from a Web browser and pasted into a mathematical
+software tool with confidence that sensible values will be computed.
+
+Since content markup is not directly concerned with how an expression is
+displayed, a renderer must infer how an expression should be presented to a
+reader. While a sufficiently sophisticated renderer and style sheet mechanism
+could in principle allow a user to read mathematical documents using personalized
+notational preferences, in practice, rendering content expressions with notational
+nuances may still require intervention of some sort. As a consequence, employing
+content tags alone may limit the ability of the author to precisely control how an
+expression is rendered.
+
+Both {\indextoo{content}} and {\indextoo{presentation}} tags are necessary in
+order to provide the full expressive capability one would expect in a markup
+language for program code.  {\codeml} offers authors elements for both content and
+presentation markup.  Whether to use one or the other, or a combination of both,
+depends on what aspects of rendering and interpretation an author wishes to
+control, and what kinds of re-use he or she wishes to facilitate.
+\end{newpart}
+
+In many common situations, an author or authoring tool may choose to generate
+either presentation or content markup exclusively. Some applications however are
+able to make use of both presentation and content information. For these
+applications it is desirable to provide both forms of markup for the same
+mathematical expression.
+
+\begin{myfig}{semantics}{The {\codeml} Interaction Elements}
+  \quicktable{\semtable{}}
+\end{myfig}
+
+To combine {\indextoo{presentation markup}}\index{markup!presentation} and
+{\indextoo{content markup}}\index{markup!content}, {\codeml} provides the
+{\element{semantics}} element. The first child of this element is a content
+{\codeml} expression, and remaining children are {\eldef{pcode}} or
+{\eldef{rawcode}} elements. The {\element{pcode}} elements contain
+presentation-{\codeml} representations of the program in the first child, and the
+{\element{rawcode}} elements raw code, i.e.  code fragments that have not been
+marked up in {\codeml}. The {\attribute{format}{pcode,rawcode}} specifies the
+programming language, the code fragment is in. Note that it is an error to have
+more than one {\element{pcode}} or {\element{rawcode}} element with the same
+{\attribute{format}{pcode,rawcode}} attribute. As the example in
+{\mylstref{find-combined}} shows, it is allowed to have {\element{pcode}} and
+{\element{rawcode}} elements of the same {\attribute{format}{pcode,rawcode}}.
+
+\begin{lstlisting}[float,frame=lines,label=lst:find-combined,
+   language=java,numbers=none,escapechar=\%,
+   caption={Conbining markup Styles},
+   index={find}]
+<semantics>
+  <ccdef export="find"><!--%\ldots see {\mylstref{find-content}} \ldots%--></ccdef>
+  <pcode format="pseudo"><cpg> <!--%\ldots see {\mylstref{find-pseudo}} \ldots%--></cpg></pcode>
+  <pcode format="java"><cpg> <!--%\ldots see {\mylstref{find-presentation}} \ldots%--></cpg></pcode>
+  <rawcode format="java"><!--%\ldots see {\mylstref{find-raw}} \ldots%--></rawcode>
+</semantics>   
+\end{lstlisting}
+
+In contrast to representation formats like {\mathml}, which allow mixing
+presentation and content at arbitrary levels, the {\codeml} format only allows
+this at the top-level.  This is called {\indextoo{parallel
+    markup}}\index{markup!parallel}.
+
+\subsection{Parallel Markup by Cross-references}
+
+Top-level pairing of independent presentation and content markup is sufficient for
+many, but not all, situations. Applications that allow treatment of
+sub-expressions of mathematical objects require the ability to associate
+presentation, content or information with the parts of an object with mathematical
+markup. Top-level pairing with a {\eldef{semantics}} element is insufficient in
+this type of situation; identification of a sub-expression in one branch of
+{\element{semantics}} element gives no indication of the corresponding parts in
+other branches.
+  
+To better accommodate applications that must deal with sub-expressions of large
+objects, {\codeml} uses cross-references between the branches of a
+{\element{semantics}} element to identify corresponding sub-structures.
+
+Cross-referencing is achieved using {\attribute{id}{c-{\codeml}}} and
+{\attribute{xlink:xref}{p-{\codeml}}} attributes within the branches of a
+containing semantics element. These attributes may optionally be placed on MathML
+elements of any type.
+
+An {\attribute{id}{c-{\codeml}}} attribute and a corresponding
+{\attribute{xlink:xref}{p-{\codeml}}} appearing within the same
+{\element{semantics}} element create a correspondence between sub-expressions.
+  
+In general, there will not be a one-to-one correspondence between nodes in
+parallel branches. For example, a presentation tree may contain elements, such as
+parentheses, that have no correspondents in the content tree. Therefore {\codeml}
+puts the {\attribute{id}{c-{\codeml}}} attributes on the branch with the content
+tree, which has the finest-grained node structure and the
+{\attribute{xlink:xref}{p-{\codeml}}} attributes on the presentation-branches.  
+
+Let us fortify our intuition about this with an extended development of the
+{\ttin{find}} procedure that combines all the material discussed above.
+
+\def\boxit#1{\fbox{#1}}
+{\scriptsize\lstinputlisting[
+  index={find,cpg,cpo,cpg,cptype,code,cpc,cpd,cpt,ccdef,symbol,type,apply,bind,bvar,ccb,ccv},
+  emph={id,xlink:xref},escapebegin={<!--+},escapeend={+-->}]
+{../../examples/spec/find.cml}}
+
+\ref{lst-cr:fig:find-ccode:ccsym-bind}
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "codeml"
+%%% End: 

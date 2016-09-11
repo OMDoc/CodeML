@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  A RelaxNG schema for CodeML (presentation and content of program code)
+  Content Markup Module
+  $Id: codeml-cont.rnc 17 2008-08-18 15:37:44Z kohlhase $
+  $HeadURL: https://svn.omdoc.org/repos/codeml/RelaxNG/codeml-cont.rnc $
+  See the documentation and examples at https://www.omdoc.org/codeml
+  Copyright (c) 2008 Michael Kohlhase, Deyan Ginev, Dimitar Misev, Catalin David
+  released under the GNU Public License (GPL) 
+-->
+<grammar ns="http://www.mathweb.org/codeml" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <define name="cc.class">
+    <choice>
+      <ref name="apply"/>
+      <ref name="bind"/>
+      <ref name="bvar"/>
+      <ref name="ccv"/>
+      <ref name="ccb"/>
+      <ref name="ccsym"/>
+    </choice>
+  </define>
+  <define name="cc.top.class">
+    <choice>
+      <ref name="cc.class"/>
+      <ref name="ccdef"/>
+    </choice>
+  </define>
+  <define name="cc.common.attrib">
+    <ref name="common.attrib"/>
+  </define>
+  <!-- application -->
+  <define name="apply">
+    <element name="apply">
+      <zeroOrMore>
+        <ref name="cc.class"/>
+      </zeroOrMore>
+      <ref name="cc.common.attrib"/>
+    </element>
+  </define>
+  <!-- binding -->
+  <define name="bind">
+    <element name="bind">
+      <ref name="ccsym"/>
+      <ref name="bvar"/>
+      <ref name="cc.class"/>
+      <ref name="cc.common.attrib"/>
+    </element>
+  </define>
+  <!-- bound varibale declarations -->
+  <define name="bvar">
+    <element name="bvar">
+      <zeroOrMore>
+        <ref name="ccv"/>
+      </zeroOrMore>
+      <ref name="cc.common.attrib"/>
+    </element>
+  </define>
+  <!-- variables -->
+  <define name="ccv">
+    <element name="ccv">
+      <attribute name="name"/>
+      <ref name="cc.common.attrib"/>
+    </element>
+  </define>
+  <!-- basic language objects -->
+  <define name="ccb">
+    <element name="ccb">
+      <text/>
+      <optional>
+        <attribute name="type">
+          <data type="NMTOKEN"/>
+        </attribute>
+      </optional>
+      <optional>
+        <ref name="cc.common.attrib"/>
+      </optional>
+    </element>
+  </define>
+  <!-- symbols (reserved names) -->
+  <define name="ccsym">
+    <element name="ccsym">
+      <text/>
+      <attribute name="cd"/>
+      <attribute name="name"/>
+      <ref name="cc.common.attrib"/>
+    </element>
+  </define>
+  <!-- definitions -->
+  <define name="ccdef">
+    <element name="ccdef">
+      <ref name="ccsym"/>
+      <zeroOrMore>
+        <ref name="cc.class"/>
+      </zeroOrMore>
+      <attribute name="export"/>
+      <ref name="cc.common.attrib"/>
+    </element>
+  </define>
+  <!-- symbol declaration -->
+  <define name="symbol">
+    <element name="symbol">
+      <ref name="type"/>
+      <ref name="cc.common.attrib"/>
+    </element>
+  </define>
+  <!-- types -->
+  <define name="type">
+    <element name="type">
+      <ref name="cc.class"/>
+      <ref name="cc.common.attrib"/>
+    </element>
+  </define>
+</grammar>

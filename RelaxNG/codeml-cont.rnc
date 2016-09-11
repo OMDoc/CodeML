@@ -1,0 +1,40 @@
+# A RelaxNG schema for CodeML (presentation and content of program code)
+# Content Markup Module
+# $Id: codeml-cont.rnc 18 2008-08-18 15:47:00Z kohlhase $
+# $HeadURL: https://svn.omdoc.org/repos/codeml/RelaxNG/codeml-cont.rnc $
+# See the documentation and examples at https://www.omdoc.org/codeml
+# Copyright (c) 2008 Michael Kohlhase, Deyan Ginev, Dimitar Misev, Catalin David
+# released under the GNU Public License (GPL) 
+
+default namespace = "http://www.mathweb.org/codeml"
+
+cc.class = apply | bind | bvar | ccv | ccb | ccsym
+cc.top.class =  cc.class | ccdef 
+cc.common.attrib = common.attrib
+
+# application
+apply =  element apply {cc.class*, cc.common.attrib}
+
+# binding
+bind = element bind {ccsym, bvar,cc.class,cc.common.attrib}
+
+# bound varibale declarations
+bvar = element bvar {ccv*,cc.common.attrib}
+
+# variables
+ccv = element ccv {attribute name { text },cc.common.attrib}
+
+# basic language objects
+ccb = element ccb {text,attribute type { xsd:NMTOKEN }?,cc.common.attrib?}
+
+# symbols (reserved names)
+ccsym = element ccsym {text,attribute cd { text },attribute name { text },cc.common.attrib}
+
+# definitions
+ccdef = element ccdef {ccsym,cc.class*,attribute export { text },cc.common.attrib}
+
+# symbol declaration
+symbol = element symbol {type,cc.common.attrib}
+
+# types
+type = element type {cc.class,cc.common.attrib}

@@ -1,0 +1,76 @@
+/*define each pcode as a block*/
+pcode{
+display:block;
+padding:5px;
+}
+/* Write the closing symbol from the attribute*/ 
+cpg[close]:after{
+	color: #000000;
+	content: attr(close);
+}
+/* Write the opening symbol from the attribute*/ 
+cpg[open]:before{
+	color: #000000;
+	content: attr(open);
+}
+/* Selects Only the '{' attr with Obreak present*/
+cpg[breakO="hard"][open="{"]:before{
+	color: #000000;
+	content: attr(open);
+}
+/* Selects Only the '{' attr with Obreak present*/
+cpg[Obreak="hard"][open="{"]:before{
+	color: #000000;
+	content: "\A" attr(open) ;
+}
+/*For the end of each line with breakC attribute*/
+cpg[breakC="hard"][close]:after{
+	color: #000000;
+	content:attr(close) ;
+}
+/*For the end of each line with Cbreak attribute*/
+cpg[Cbreak="hard"][close]:after{
+	color: #000000;
+	content: attr(close);
+}
+/*Define elements inside brk as blok and also use the indent attribute*/
+brk[indent="1"] {
+	display:block;
+	color:#FF3333;
+	padding-left:1em;
+}
+/*Define elements inside brk as blok and also use the indent attribute*/
+brk[indent="2"] {
+	display:block;
+	color:#FF3333;
+	padding-left:2em;
+}
+/*Define elements inside brk as blok and also use the indent attribute*/
+brk[indent="3"] {
+	display:block;
+	color:#FF3333;
+	padding-left:3em;
+}
+/*Define elements inside brk as blok and also use the indent attribute*/
+brk[indent="0"] {
+	display:block;
+	color:#FF3333;
+	padding-left:0px;
+}
+/*blue color for built in words*/
+cptype,cpo[type="built-in"] {
+	color:#0033CC;
+}
+/*black color for user defined words*/
+cpb,cpo[type="imported"],cpo[type="defined"] {
+	color: #000000;
+}
+/*green color for variables*/
+cpi{
+	color:#009933;}
+/*Grey color for comments and descriptive text*/
+cpt{
+	color:#999999;}
+	
+	
+

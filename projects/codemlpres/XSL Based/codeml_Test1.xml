@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xml" href="codeml.xsl"?>
+<pcode format="java">
+	<cpg>
+		<cpg>
+			<cpo type="built-in">public</cpo>
+			<cptype>int</cptype>
+			<cpo>find</cpo>
+			<cpg open="(" close=")">
+				<cptype>int</cptype>
+				<cpi>x</cpi>
+			</cpg>
+ 		</cpg>
+		<cpg open="{" close="}" breakO="hard" indent="1">
+			<cpg close=";" Cbreak="hard">
+				<cpo type="built-in">if</cpo>
+				<cpg open="(" close=")">
+					<cpi>s</cpi>
+					<cpg open="[" close="]"><cpi>x</cpi></cpg>
+					<cpo type="built-in">&lt;</cpo>
+					<cpb type="number">0</cpb>
+				</cpg>
+				<cpo>return</cpo>
+				<cpi>x</cpi>
+			</cpg>
+			<cpg close=";" Cbreak="hard">
+				<cpo type="built-in">return</cpo>
+				<cpg>
+					<cpo>find</cpo>
+					<cpg open="(" close=")">
+						<cpi>s</cpi>
+						<cpg open="[" close="]">
+							<cpi>x</cpi>
+						</cpg>
+					</cpg>
+				</cpg>
+			</cpg>
+			
+			
+		</cpg>
+	</cpg>
+</pcode>

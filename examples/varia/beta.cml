@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<code xmlns="http://www.mathweb.org/codeml"
+      format="prolog" breakS="hard" Sbreak="hard">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <dc:title>Beta Reduction</dc:title>
+    <dc:creator role="aut">Johan Bos</dc:creator>
+    <dc:creator role="aut">Patrick Blackburn</dc:creator>
+    <dc:creator role="trl">Michael Kohlhase</dc:creator>
+    <dc:date action="initial">1998-03-11T00:00:00</dc:date>
+    <dc:date action="translated">2002-09-17T00:00:00</dc:date>
+    <dc:description>
+      Implementation of Beta-Conversion
+    </dc:description>
+    <dc:source>Computational Semantics: http://www.comsem.org/</dc:source>
+    <dc:rights>Copyright: The MILCA project</dc:rights>
+  </metadata>
+
+<cpg close=".">
+  <cpo>:-</cpo>
+  <cpg>
+    <cpo>module</cpo>
+    <cpg>
+      <cpg open="(" close=")" separator=",">
+	<cpi>betaConversion</cpi>
+	<cpg>
+        <cpo>[</cpo>
+	<cpg>
+	  <cpo type="definiens">betaConvertList</cpo>
+	  <cpo>/</cpo>
+	  <cpb type="number">2</cpb>
+	</cpg>
+        <cpo>,</cpo> 
+        <cpg>
+	  <cpo type="definiens">betaConvert</cpo>
+	  <cpo>/</cpo>
+	  <cpb type="number">2</cpb>
+	</cpg>
+	<cpo>]</cpo>
+      </cpg>
+     </cpg>
+    </cpg>
+  </cpg>
+</cpg>
+
+<cpg close=".">
+  <cpo>:-</cpo>
+  <cpg>
+    <cpo>ensure_loaded</cpo>
+    <cpg>
+      <cpg open="(" close=")"><cpi>comsemOperators</cpi></cpg>
+    </cpg>
+  </cpg>
+</cpg>
+
+<cpg close=".">
+  <cpo>:-</cpo>
+  <cpg>
+    <cpo>use_module</cpo>
+    <cpg>
+      <cpg open="(" close=")" separator=",">
+	<cpi>comsemPredicates</cpi>
+        <cpg>
+	<cpo>[</cpo>
+	<cpg>
+	  <cpo type="imported">compose</cpo>
+	  <cpo>/</cpo>
+	  <cpb type="number">3</cpb>
+	</cpg>
+        <cpo>,</cpo>
+	<cpg>
+	  <cpo type="imported">substitute</cpo>
+	  <cpo>/</cpo>
+	  <cpb type="number">4</cpb>
+	</cpg>
+	<cpo>]</cpo>
+      </cpg>
+     </cpg>
+    </cpg>
+  </cpg>
+</cpg>
+
+<cpg close=".">
+  <cpg>
+    <cpo type="definiens">betaConvert</cpo>
+    <cpg open="(" close=")" separator=",">
+      <cpi>Var</cpi>
+      <cpi>Result</cpi>
+    </cpg>
+  </cpg>
+  <cpo>:-</cpo>
+  <cpg separator="," Obreak="hard" Sbreak="hard">
+    <cpg>
+      <cpo type="imported">var</cpo>
+      <cpg open="(" close=")"><cpi>Var</cpi></cpg>
+    </cpg>
+    <cpo>!</cpo>
+    <cpg><cpi>Result</cpi><cpo>=</cpo><cpi>Var</cpi></cpg>
+  </cpg>
+</cpg>
+
+<cpg close=".">
+  <cpg>
+    <cpo type="definiens">betaConvert</cpo>
+    <cpg open="(" close=")" separator=",">
+      <cpg>
+	<cpi>Functor</cpi>
+	<cpo type="imported">@</cpo>
+	<cpi>Arg</cpi>
+      </cpg>
+      <cpi>Result</cpi>
+    </cpg>
+    <cpo>:-</cpo>
+    <cpg separator="," Obreak="hard" Sbreak="hard">
+      <cpg>
+	<cpo type="imported">compound</cpo>
+	<cpg open="(" close=")"><cpi>Functor</cpi></cpg>
+      </cpg>
+      <cpg>
+	<cpo type="recursive-call">betaConvert</cpo>
+	<cpg open="(" close=")" separator=",">
+	  <cpi>Functor</cpi>
+	  <cpg>
+	    <cpo type="imported">lambda</cpo>
+	    <cpg open="(" close=")" separator=",">
+	      <cpi>X</cpi>
+	      <cpi>Formula</cpi>
+	    </cpg>
+	  </cpg>
+        </cpg>
+      </cpg>
+      <cpo>!</cpo>   
+      <cpg>
+	<cpo type="imported">substitute</cpo>
+	<cpg open="(" close=")" separator=",">
+	  <cpi>Arg</cpi>
+	  <cpi>X</cpi>
+	  <cpi>Formula</cpi>
+	  <cpi>BetaConverted</cpi>
+	</cpg>
+      </cpg>
+      <cpg>
+	<cpo type="recursive-call">betaConvert</cpo>
+	<cpg open="(" close=")" separator=",">
+	  <cpi>BetaConverted</cpi>
+	  <cpi>Result</cpi>
+	</cpg>
+      </cpg>
+    </cpg>
+  </cpg>
+</cpg>
+
+<cpg close=".">
+  <cpg>
+    <cpo type="definiens">betaConvert</cpo>
+    <cpg open="(" close=")" separator=",">
+      <cpi>Formula</cpi>
+      <cpi>Result</cpi>
+    </cpg>
+  </cpg>
+  <cpo>:-</cpo>
+  <cpg separator="," Obreak="hard" Sbreak="hard">
+    <cpg>
+      <cpo type="imported">compose</cpo>
+      <cpg open="(" close=")" separator=",">
+	<cpi>Formula</cpi>
+	<cpi>Functor</cpi>
+	<cpi>Formulas</cpi>
+      </cpg>
+    </cpg>
+    <cpg>
+      <cpo type="recursive-call">betaConvertList</cpo>
+      <cpg open="(" close=")" separator=",">
+	<cpi>Formulas</cpi>
+	<cpi>ResultFormulas</cpi>
+      </cpg>
+    </cpg>
+    <cpg>
+      <cpo type="imported">compose</cpo>
+      <cpg open="(" close=")" separator=",">
+	<cpi>Result</cpi>
+	<cpi>Functor</cpi>
+	<cpi>ResultFormulas</cpi>
+      </cpg>
+    </cpg>
+  </cpg>
+</cpg>
+
+<cpg close=".">
+  <cpg>
+    <cpo type="definiens">betaConvertList</cpo>
+    <cpg open="(" close=")" separator=",">
+      <cpo>[]</cpo>
+      <cpo>[]</cpo>
+    </cpg>
+  </cpg>
+</cpg>
+
+<cpg close=".">
+  <cpg>
+    <cpo type="definiens">betaConvertList</cpo>
+    <cpg open="(" close=")" separator=",">
+      <cpg>
+	<cpo>[</cpo>
+	<cpi>Formula</cpi>
+	<cpo>|</cpo>
+	<cpi>Others</cpi>
+	<cpo>]</cpo>
+      </cpg>
+      <cpg>
+	<cpo>[</cpo>
+	<cpi>Result</cpi>
+	<cpo>|</cpo>
+	<cpi>ResultOthers</cpi>
+	<cpo>]</cpo>
+      </cpg>
+    </cpg>
+  </cpg>
+  <cpo>:-</cpo>
+  <cpg separator="," Obreak="hard" Sbreak="hard">
+    <cpg>
+      <cpo type="recursive-call">betaConvert</cpo>
+      <cpg open="(" close=")" separator=",">
+	<cpi>Formula</cpi>
+	<cpi>Result</cpi>
+      </cpg>
+    </cpg>
+    <cpg>
+      <cpo type="recursive-call">betaConvertList</cpo>
+      <cpg open="(" close=")" separator=",">
+	<cpi>Others</cpi>
+	<cpi>ResultOthers</cpi>
+      </cpg>
+    </cpg>
+  </cpg>
+</cpg>
+</code>

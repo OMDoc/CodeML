@@ -1,0 +1,79 @@
+<!--
+   An XML DTD for presentation and content of program code (CodeML): module Presentation
+      SYSTEM http://www.mathweb.org/src/matheb/omdoc/project/codeml/dtd/codeml.dtd
+      PUBLIC -//OMDoc//DTD CodeML V1.2//EN
+   See the documentation and examples at 
+   http://www.mathweb.org/src/mathweb/omdoc/projects/codeml
+   (c) 2002-2003 Michael Kohlhase, released under the GNU Public License (GPL)
+-->
+
+<!-- first the usual magic to allow namespace prefixes, if needed --> 
+<!ENTITY % NS.prefixed "IGNORE">
+<!ENTITY % codeml.prefixed "%NS.prefixed;">
+<!ENTITY % codeml.xmlns "http://www.mathweb.org/codeml">
+<!ENTITY % codeml.prefix "codeml">
+
+<![%codeml.prefixed;[<!ENTITY % codeml.pfx "%codeml.prefix;:">]]>
+<!ENTITY % codeml.pfx "">
+
+<!ENTITY % codeml.common.attrib "id ID #IMPLIED
+                                 style CDATA #IMPLIED
+                                 class CDATA #IMPLIED">
+<!ENTITY % codeml.extra.toplevel.attrib "">
+
+<!-- The default configuration for loading DTD modules -->
+<!ENTITY % codeml.cont.module "INCLUDE">   <!-- CodeML Content -->
+<!ENTITY % codeml.pres.module "INCLUDE">      <!-- CodeML Presentation -->
+<!ENTITY % codeml.meta.module "INCLUDE">      <!-- CodeML Metadata -->
+<!ENTITY % codeml.inter.module "INCLUDE">      <!-- CodeML Interaction -->
+
+
+<!--    The current XML-recommendation doesn't yet support the 
+        three-letter short names for languages (ISO 693-2). So 
+        the following section will be using the two-letter 
+        (ISO 693-1) encoding for the languages.
+
+	en : English,	de : German,	fr : French,
+	la : Latin, 	it : Italian, 	nl : Dutch,
+	ru : Russian,	pl : Polish,	es : Spanish,
+	tr : Turkish,	zh : Chinese,	ja : Japanese,
+	ko : Korean     ...                     -->
+<!ENTITY % ISO639 "(aa|ab|af|am|ar|as|ay|az|ba|be|bg|bh|bi|bn|bo|br|ca|co|
+                    cs|cy|da|de|dz|el|en|eo|es|et|eu|fa|fi|fj|fo|fr|fy|ga|
+                    gd|gl|gn|gu|ha|he|hi|hr|hu|hy|ia|ie|ik|id|is|it|iu|ja|
+                    jv|ka|kk|kl|km|kn|ko|ks|ku|ky|la|ln|lo|lt|lv|mg|mi|mk|
+                    ml|mn|mo|mr|ms|mt|my|na|ne|nl|no|oc|om|or|pa|pl|ps|pt|
+                    qu|rm|rn|ro|ru|rw|sa|sd|sg|sh|si|sk|sl|sm|sn|so|sq|sr|
+                    ss|st|su|sv|sw|ta|te|tg|th|ti|tk|tl|tn|to|tr|ts|tt|tw|
+                    ug|uk|ur|uz|vi|vo|wo|xh|yi|yo|za|zh|zu)">
+
+<!ENTITY % xml.lang.attrib "xml:lang %ISO639; 'en'">
+
+
+<![%codeml.meta.module;[
+   <!ENTITY % codeml.meta.mod PUBLIC "-//OMDoc//DTD CodeML META V1.2//EN"
+                                     "codemlmeta.mod">
+   %codeml.meta.mod;]]>
+<!ENTITY % codeml.meta.opt.content "">
+
+<![%codeml.cont.module;[
+   <!ENTITY % codeml.cont.mod PUBLIC "-//OMDoc//DTD CodeML CONT V1.2//EN"
+                                     "codemlcont.mod">
+   %codeml.cont.mod;]]>
+
+<![%codeml.pres.module;[
+   <!ENTITY % codeml.pres.mod PUBLIC "-//OMDoc//DTD CodeML PRES V1.2//EN"
+                                     "codemlpres.mod">
+   %codeml.pres.mod;]]>
+
+<![%codeml.inter.module;[
+   <!ENTITY % codeml.inter.mod PUBLIC "-//OMDoc//DTD CodeML INTER V1.2//EN"
+                                     "codemlinter.mod">
+   %codeml.inter.mod;]]>
+
+<!-- todo
+ - more CSS style attributes for cpstyle  (copy from MathML spec)
+ - maybe add something for datatypes.
+ - fix xlink:role
+ - do something about 'input' 'output' 'effect' (specify the doc.class; entity) 
+  -->

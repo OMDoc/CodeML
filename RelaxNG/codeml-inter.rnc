@@ -1,0 +1,36 @@
+# A RelaxNG schema for CodeML (presentation and content of program code)
+# Interface Module
+# $Id: codeml-inter.rnc 18 2008-08-18 15:47:00Z kohlhase $
+# $HeadURL: https://svn.omdoc.org/repos/codeml/RelaxNG/codeml-inter.rnc $
+# See the documentation and examples at https://www.omdoc.org/codeml
+# Copyright (c) 2008 Michael Kohlhase, Deyan Ginev, Dimitar Misev, Catalin David
+# released under the GNU Public License (GPL) 
+
+default namespace codeml = "http://www.mathweb.org/codeml"
+
+xcode.attrib = attribute format { text },
+ 	                attribute type { text }?,
+		        attribute href { text }?
+
+semantics =  element semantics {cc.top.class,(pcode | rawcode)*}
+   
+dublincore = grammar {include "MARCRelators.rnc" 
+      include "dublincore.rnc"      
+	   {dc.date = attribute action {xsd:NMTOKEN}?,attribute who {xsd:anyURI}?,xsd:dateTime
+	    dc.identifier = attribute scheme {xsd:NMTOKEN},text
+	    dc.type = "Dataset" | "Text" | "Collection"
+	    dc.text = parent common.attrib, parent xml.lang.attrib,text
+	    dc.person = attribute role {MARCRelators}?,text}}
+ 
+metadata = element metadata {common.attrib,dublincore*}
+
+pcode.content = metadata?,cp.class*
+   
+pcode = element pcode {pcode.content,xcode.attrib,cp.group.attrib}
+
+rawcode.content = text
+
+rawcode = element rawcode {rawcode.content,xcode.attrib}
+
+code = element code {common.attrib,cp.group.attrib,xcode.attrib,
+                                   metadata?,(cp.class| cc.top.class| semantics)*}

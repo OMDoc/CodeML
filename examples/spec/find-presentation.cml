@@ -1,0 +1,26 @@
+<code>
+   <cpg>
+     <cpo>public</cpo><cptype>int</cptype><cpo>find</cpo>
+     <cpg open="(" close=")"><cptype>int</cptype><cpi>x</cpi></cpg>
+   </cpg>
+   <cpg open="{" close="}" breaks="ob-c">
+     <cpo>if</cpo>
+     <cpg open="(" close=")">
+       <cpo>s</cpo>
+       <cpg open="[" close="]"><cpi>x</cpi></cpg>
+       <cpo>&lt;</cpo>
+       <cpb type="number">0</cpb>
+     </cpg>
+     <cpg close=";" breaks="o-cb"><cpo>return</cpo><cpi>x</cpi></cpg>
+     <cpg close=";" breaks="o-cb">
+       <cpo>return</cpo>
+       <cpg>
+	 <cpo>find</cpo>
+	 <cpg open="(" close=")">
+	   <cpo>s</cpo>
+	   <cpg open="[" close="]"><cpi>x</cpi></cpg>
+	 </cpg>
+       </cpg>
+     </cpg>
+   </cpg>
+ </pcode>

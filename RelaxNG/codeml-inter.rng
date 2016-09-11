@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  A RelaxNG schema for CodeML (presentation and content of program code)
+  Interface Module
+  $Id: codeml-inter.rnc 17 2008-08-18 15:37:44Z kohlhase $
+  $HeadURL: https://svn.omdoc.org/repos/codeml/RelaxNG/codeml-inter.rnc $
+  See the documentation and examples at https://www.omdoc.org/codeml
+  Copyright (c) 2008 Michael Kohlhase, Deyan Ginev, Dimitar Misev, Catalin David
+  released under the GNU Public License (GPL) 
+-->
+<grammar ns="http://www.mathweb.org/codeml" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <define name="xcode.attrib">
+    <attribute name="format"/>
+    <optional>
+      <attribute name="type"/>
+    </optional>
+    <optional>
+      <attribute name="href"/>
+    </optional>
+  </define>
+  <define name="semantics">
+    <element name="semantics">
+      <ref name="cc.top.class"/>
+      <zeroOrMore>
+        <choice>
+          <ref name="pcode"/>
+          <ref name="rawcode"/>
+        </choice>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="dublincore">
+    <grammar>
+      <include href="MARCRelators.rng"/>
+      <include href="dublincore.rng">
+        <define name="dc.date">
+          <optional>
+            <attribute name="action">
+              <data type="NMTOKEN"/>
+            </attribute>
+          </optional>
+          <optional>
+            <attribute name="who">
+              <data type="anyURI"/>
+            </attribute>
+          </optional>
+          <data type="dateTime"/>
+        </define>
+        <define name="dc.identifier">
+          <attribute name="scheme">
+            <data type="NMTOKEN"/>
+          </attribute>
+          <text/>
+        </define>
+        <define name="dc.type">
+          <choice>
+            <value>Dataset</value>
+            <value>Text</value>
+            <value>Collection</value>
+          </choice>
+        </define>
+        <define name="dc.text">
+          <parentRef name="common.attrib"/>
+          <parentRef name="xml.lang.attrib"/>
+          <text/>
+        </define>
+        <define name="dc.person">
+          <optional>
+            <attribute name="role">
+              <ref name="MARCRelators"/>
+            </attribute>
+          </optional>
+          <text/>
+        </define>
+      </include>
+    </grammar>
+  </define>
+  <define name="metadata">
+    <element name="metadata">
+      <ref name="common.attrib"/>
+      <zeroOrMore>
+        <ref name="dublincore"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="pcode.content">
+    <optional>
+      <ref name="metadata"/>
+    </optional>
+    <zeroOrMore>
+      <ref name="cp.class"/>
+    </zeroOrMore>
+  </define>
+  <define name="pcode">
+    <element name="pcode">
+      <ref name="pcode.content"/>
+      <ref name="xcode.attrib"/>
+      <ref name="cp.group.attrib"/>
+    </element>
+  </define>
+  <define name="rawcode.content">
+    <text/>
+  </define>
+  <define name="rawcode">
+    <element name="rawcode">
+      <ref name="rawcode.content"/>
+      <ref name="xcode.attrib"/>
+    </element>
+  </define>
+  <define name="code">
+    <element name="code">
+      <ref name="common.attrib"/>
+      <ref name="cp.group.attrib"/>
+      <ref name="xcode.attrib"/>
+      <optional>
+        <ref name="metadata"/>
+      </optional>
+      <zeroOrMore>
+        <choice>
+          <ref name="cp.class"/>
+          <ref name="cc.top.class"/>
+          <ref name="semantics"/>
+        </choice>
+      </zeroOrMore>
+    </element>
+  </define>
+</grammar>

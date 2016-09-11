@@ -1,0 +1,28 @@
+# A RelaxNG schema for CodeML (presentation and content of program code)
+# Schema driver
+# $Id: codeml.rnc 18 2008-08-18 15:47:00Z kohlhase $
+# $HeadURL: https://svn.omdoc.org/repos/codeml/RelaxNG/codeml.rnc $
+# See the documentation and examples at https://www.omdoc.org/codeml
+# Copyright (c) 2008 Michael Kohlhase, Deyan Ginev, Dimitar Misev, Catalin David
+# released under the GNU Public License (GPL) 
+
+include "codeml-cont.rnc"
+include "codeml-pres.rnc"
+include "codeml-inter.rnc"
+
+common.attrib = attribute id {xsd:ID}?
+
+ISO639 = "aa"|"ab"|"af"|"am"|"ar"|"as"|"ay"|"az"|"ba"|"be"|"bg"|"bh"|"bi"|"bn"|"bo"|"br"|"ca"|"co"|
+                "cs"|"cy"|"da"|"de"|"dz"|"el"|"en"|"eo"|"es"|"et"|"eu"|"fa"|"fi"|"fj"|"fo"|"fr"|"fy"|"ga"|
+                "gd"|"gl"|"gn"|"gu"|"ha"|"he"|"hi"|"hr"|"hu"|"hy"|"ia"|"ie"|"ik"|"id"|"is"|"it"|"iu"|"ja"|
+                "jv"|"ka"|"kk"|"kl"|"km"|"kn"|"ko"|"ks"|"ku"|"ky"|"la"|"ln"|"lo"|"lt"|"lv"|"mg"|"mi"|"mk"|
+                "ml"|"mn"|"mo"|"mr"|"ms"|"mt"|"my"|"na"|"ne"|"nl"|"no"|"oc"|"om"|"or"|"pa"|"pl"|"ps"|"pt"|
+                "qu"|"rm"|"rn"|"ro"|"ru"|"rw"|"sa"|"sd"|"sg"|"sh"|"si"|"sk"|"sl"|"sm"|"sn"|"so"|"sq"|"sr"|
+                "ss"|"st"|"su"|"sv"|"sw"|"ta"|"te"|"tg"|"th"|"ti"|"tk"|"tl"|"tn"|"to"|"tr"|"ts"|"tt"|"tw"|
+                "ug"|"uk"|"ur"|"uz"|"vi"|"vo"|"wo"|"xh"|"yi"|"yo"|"za"|"zh"|"zu"
+
+xml.lang.attrib = attribute xml:lang {ISO639}?
+
+start = code
+
+#More declarations to come, still incomplete...

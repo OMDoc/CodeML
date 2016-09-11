@@ -1,0 +1,65 @@
+\documentclass[11pt,twoside,titlepage]{report}
+\usepackage{array,longtable} %standard
+\usepackage{listings,lstomdoc,acronyms}  
+\usepackage[today,fancyhdr]{svninfo}
+\usepackage{macros}   %local
+\usepackage[a4paper=true,  bookmarks=true, linkcolor=black,
+citecolor=black,urlcolor=black,colorlinks=true,pagecolor=black,
+breaklinks=true, bookmarksopen=true]{hyperref}
+\makeindex
+\edshownotes
+\title{{\codeml}: An Open Markup Format the Content and Presentatation of Program Code}
+\author{Michael Kohlhase\\
+  Computer Science, Carnegie Mellon University\\
+  Pittsburgh, Pa 15213, USA\\
+  {\url{http://www.cs.cmu.edu/~kohlhase}}}
+
+\begin{document}
+\svnInfo $Id: codeml.tex 15 2008-02-22 07:55:51Z kohlhase $
+\svnKeyword $HeadURL: https://svn.omdoc.org/repos/codeml/doc/spec/codeml.tex $
+
+\maketitle
+\setcounter{page}{0}\pagenumbering{roman}
+\begin{abstract}
+  This specification defines the Code Markup Language, or {\codeml}. {\codeml} is
+  an {\xml} application for describing progra codem and capturing both its
+  structure and content. The goal of {\codeml} is to enable program code to be
+  served, received, and processed on the World Wide Web, just as HTML has enabled
+  this functionality for text.
+  
+  {\codeml} is inspired by the {\mathml} and {\openmath} format for markup of
+  mathematical formulae and can be used in conjuction with these formats in a
+  variety of document formats.
+
+  \paragraph{Status of this Document:} 
+
+  This specification of the markup language {\codeml} is intended primarily for a
+  readership consisting of those who will be developing or implementing renderers
+  or editors using it, or software that will communicate using {\codeml} as a
+  protocol for input or output. It is not a User's Guide but rather a reference
+  document.
+  
+  The current report is an early draft of the specification of the {\codeml}
+  format. Even though the basic layout of the format should survive, details like
+  element- or attribute names, and content models are very likely to change as
+  implementation and application experience grows.
+\end{abstract}
+\newpage
+\setcounter{tocdepth}{2}\tableofcontents
+newpage\pagenumbering{arabic}
+\include{intro}
+\include{format}
+\include{concl}
+\newpage 
+\bibliographystyle{alpha} 
+\bibliography{codeml} 
+\newpage
+{\small\input{\jobname.ind}}
+\include{appendix}
+\ednotemessage
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

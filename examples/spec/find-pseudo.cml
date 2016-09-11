@@ -1,0 +1,36 @@
+ <code format="pseudo-code">
+ <cpg>
+   <cpo>procedure</cpo>
+   <cpg indent="0">
+     <cpi>find</cpi>
+     <cpg open="(" close=")"><cpi>x</cpi></cpg>
+     <cpg separator="break" breaks="bo-c">
+       <cpg>
+	 <cpo>if</cpo>
+	 <cpd>
+	   <cpt>s[x] is negative</cpt>
+	   <cpt xml:lang="de">s[x] ist negativ</cpt>
+	 </cpd>
+       </cpg>
+       <cpg>
+	 <cpo>then</cpo>
+	 <cpo>return</cpo>
+	 <cpi>x</cpi>
+	 <cpc>
+	   <cpt>we are at the root</cpt>
+	   <cpt xml:lang="de">Wir sind in der Wurzel</cpt>
+	 </cpc>
+       </cpg>
+       <cpg>
+	 <cpo>otherwise</cpo>
+	 <cpo>return</cpo>
+	 <cpi>c[x]</cpi>
+	 <cpc>
+	   <cpt>way to go!</cpt>
+	   <cpt xlm:lang>auf gehts!</cpt>
+	 </cpc>
+       </cpg>
+     </cpg>
+   </cpg>
+ </cpg>
+</code>

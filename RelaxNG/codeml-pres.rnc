@@ -1,0 +1,69 @@
+# A RelaxNG schema for CodeML (presentation and content of program code)
+# Presentation Module
+# $Id: codeml-pres.rnc 19 2008-12-04 10:37:03Z kohlhase $
+# $HeadURL: https://svn.omdoc.org/repos/codeml/RelaxNG/codeml-pres.rnc $
+# See the documentation and examples at https://www.omdoc.org/codeml
+# Copyright (c) 2008 Michael Kohlhase, Deyan Ginev, Dimitar Misev, Catalin David
+# released under the GNU Public License (GPL) 
+
+default namespace codeml = "http://www.mathweb.org/codeml"
+
+cp.class = cpg | cpb | cpo | cpi | cpbr | cptype | cpd | cpc | cpr | cpstyle
+
+cp.common.attrib = common.attrib, attribute xref {xsd:anyURI}?
+
+cp.group.attrib = 
+    attribute open { text }?,
+    attribute close { text }?,
+    attribute separator { text }?,
+    attribute indent { text }?,
+    attribute Obreak { text }?,
+    attribute breakO { text }?,
+    attribute Cbreak { text }?,
+    attribute breakC { text }?,
+    attribute Sbreak { text }?,
+    attribute breakS { text }?
+
+cp.style.attrib = 
+    attribute variant { token }?,
+    attribute size {text}?,
+    attribute color { text }?,
+    attribute background {text}?
+
+cp.token.attrib = cp.common.attrib,cp.style.attrib
+
+#Groups
+cpg = element cpg{cp.class*,cp.common.attrib?,cp.group.attrib?}
+
+#basic language objects
+cpb = element cpb {text,cp.token.attrib?,attribute type {xsd:NCName}}
+
+#operators
+cpo.types = "built-in" | "imported" | "defined" | "definiens" | "recursive-call" 
+cpo = element cpo {text,cp.token.attrib, attribute type {cpo.types}?}
+
+#identifiers
+cpi =  element cpi {text,cp.token.attrib}
+
+#linebreaks
+cpbr = element cpbr{cp.common.attrib}
+
+#datatypes
+cptype  = element cptype {text,cp.common.attrib}
+
+#multilingual text
+cp.text = text
+cpt = element cpt{cp.common.attrib,cp.style.attrib,xml.lang.attrib,cp.text}
+
+#descriptions
+cpd =  element cpd {cpt+,cp.common.attrib}
+
+#comments
+cpc =  element cpc {cpt+,cp.common.attrib}
+
+#raw code
+cpr = element cpr{text,cp.common.attrib}
+
+#style information
+cpstyle = element cpstyle {cp.class,cp.common.attrib,cp.style.attrib}
+

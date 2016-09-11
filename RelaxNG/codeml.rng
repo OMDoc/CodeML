@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <!--
+    A RelaxNG schema for CodeML (presentation and content of program code)
+    Schema driver
+    $Id: codeml.rnc 17 2008-08-18 15:37:44Z kohlhase $
+    $HeadURL: https://svn.omdoc.org/repos/codeml/RelaxNG/codeml.rnc $
+    See the documentation and examples at https://www.omdoc.org/codeml
+    Copyright (c) 2008 Michael Kohlhase, Deyan Ginev, Dimitar Misev, Catalin David
+    released under the GNU Public License (GPL) 
+  -->
+  <include href="codeml-cont.rng"/>
+  <include href="codeml-pres.rng"/>
+  <include href="codeml-inter.rng"/>
+  <define name="common.attrib">
+    <optional>
+      <attribute name="id">
+        <data type="ID"/>
+      </attribute>
+    </optional>
+  </define>
+  <define name="ISO639">
+    <choice>
+      <value>aa</value>
+      <value>ab</value>
+      <value>af</value>
+      <value>am</value>
+      <value>ar</value>
+      <value>as</value>
+      <value>ay</value>
+      <value>az</value>
+      <value>ba</value>
+      <value>be</value>
+      <value>bg</value>
+      <value>bh</value>
+      <value>bi</value>
+      <value>bn</value>
+      <value>bo</value>
+      <value>br</value>
+      <value>ca</value>
+      <value>co</value>
+      <value>cs</value>
+      <value>cy</value>
+      <value>da</value>
+      <value>de</value>
+      <value>dz</value>
+      <value>el</value>
+      <value>en</value>
+      <value>eo</value>
+      <value>es</value>
+      <value>et</value>
+      <value>eu</value>
+      <value>fa</value>
+      <value>fi</value>
+      <value>fj</value>
+      <value>fo</value>
+      <value>fr</value>
+      <value>fy</value>
+      <value>ga</value>
+      <value>gd</value>
+      <value>gl</value>
+      <value>gn</value>
+      <value>gu</value>
+      <value>ha</value>
+      <value>he</value>
+      <value>hi</value>
+      <value>hr</value>
+      <value>hu</value>
+      <value>hy</value>
+      <value>ia</value>
+      <value>ie</value>
+      <value>ik</value>
+      <value>id</value>
+      <value>is</value>
+      <value>it</value>
+      <value>iu</value>
+      <value>ja</value>
+      <value>jv</value>
+      <value>ka</value>
+      <value>kk</value>
+      <value>kl</value>
+      <value>km</value>
+      <value>kn</value>
+      <value>ko</value>
+      <value>ks</value>
+      <value>ku</value>
+      <value>ky</value>
+      <value>la</value>
+      <value>ln</value>
+      <value>lo</value>
+      <value>lt</value>
+      <value>lv</value>
+      <value>mg</value>
+      <value>mi</value>
+      <value>mk</value>
+      <value>ml</value>
+      <value>mn</value>
+      <value>mo</value>
+      <value>mr</value>
+      <value>ms</value>
+      <value>mt</value>
+      <value>my</value>
+      <value>na</value>
+      <value>ne</value>
+      <value>nl</value>
+      <value>no</value>
+      <value>oc</value>
+      <value>om</value>
+      <value>or</value>
+      <value>pa</value>
+      <value>pl</value>
+      <value>ps</value>
+      <value>pt</value>
+      <value>qu</value>
+      <value>rm</value>
+      <value>rn</value>
+      <value>ro</value>
+      <value>ru</value>
+      <value>rw</value>
+      <value>sa</value>
+      <value>sd</value>
+      <value>sg</value>
+      <value>sh</value>
+      <value>si</value>
+      <value>sk</value>
+      <value>sl</value>
+      <value>sm</value>
+      <value>sn</value>
+      <value>so</value>
+      <value>sq</value>
+      <value>sr</value>
+      <value>ss</value>
+      <value>st</value>
+      <value>su</value>
+      <value>sv</value>
+      <value>sw</value>
+      <value>ta</value>
+      <value>te</value>
+      <value>tg</value>
+      <value>th</value>
+      <value>ti</value>
+      <value>tk</value>
+      <value>tl</value>
+      <value>tn</value>
+      <value>to</value>
+      <value>tr</value>
+      <value>ts</value>
+      <value>tt</value>
+      <value>tw</value>
+      <value>ug</value>
+      <value>uk</value>
+      <value>ur</value>
+      <value>uz</value>
+      <value>vi</value>
+      <value>vo</value>
+      <value>wo</value>
+      <value>xh</value>
+      <value>yi</value>
+      <value>yo</value>
+      <value>za</value>
+      <value>zh</value>
+      <value>zu</value>
+    </choice>
+  </define>
+  <define name="xml.lang.attrib">
+    <optional>
+      <attribute name="xml:lang">
+        <ref name="ISO639"/>
+      </attribute>
+    </optional>
+  </define>
+  <start>
+    <ref name="code"/>
+  </start>
+</grammar>
+<!-- More declarations to come, still incomplete... -->

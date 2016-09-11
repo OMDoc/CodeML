@@ -1,0 +1,1 @@
+Here we implement pure CSS based viewing. Its been test in firefox and opera. Also note the difference between codeml1 and codeml2. Even though the code is same the formatting of the code is different and we get different result due to browser not supporting the standards.

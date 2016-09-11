@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<code format="multi" xmlns="http://www.mathweb.org/codeml">
+ <semantics>
+ <ccdef export="find" id="find-def">
+   <ccsym cd="java.dec" name="public-type-function"/>
+   <apply id="find-type">
+     <ccsym cd="java.types" name="funtype"/> <!--+\label{lst-cr:fig:find-ccode:ccsym}+-->
+     <ccsym cd="java.types" name="int"/>
+     <ccsym cd="java.types" name="int"/>
+   </apply>
+   <bind>
+     <ccsym cd="java.proc" name="function"/> <!--+\label{lst-cr:fig:find-ccode:ccsym-bind}+-->
+     <bvar><ccv name="x"/></bvar>            <!--+\label{lst-cr:fig:find-ccode:bvar}+-->
+     <apply id="find-body">                  <!--+\label{lst-cr:fig:find-ccode:body}+-->
+       <ccsym cd="java.control" name="if"/>
+       <apply id="cond">
+         <ccsym cd="java.arith" name="less"/>
+         <apply>
+           <ccsym cd="java.array" name="select"/>
+           <ccv name="s"/>                   <!--+\label{lst-cr:fig:find-ccode:ccv}+-->
+           <ccv name="x"/>
+         </apply>
+         <ccb type="number">0</ccb>          <!--+\label{lst-cr:fig:find-ccode:ccb}+-->
+       </apply>
+       <apply>
+         <ccsym cd="java.proc" name="return"/>
+         <ccv name="x"/>
+       </apply>
+       <apply>
+         <ccsym cd="java.proc" name="return"/>
+         <apply>
+           <ccsym cd="union-find" name="find"/>
+           <apply>
+             <ccsym cd="java.array" name="select"/>
+             <ccv name="s"/>
+             <ccv name="x"/>
+           </apply>
+         </apply>
+       </apply>
+     </apply>
+   </bind>
+ </ccdef>
+ <pcode format="java">
+   <cpg>
+     <cpo>public</cpo><cptype>int</cptype><cpo>find</cpo>
+     <cpg open="(" close=")"><cptype>int</cptype><cpi>x</cpi></cpg>
+   </cpg>
+   <cpg open="{" close="}" breakO="hard" xref="find-body">
+     <cpo>if</cpo>
+     <cpg open="(" close=")" xref="cond">
+       <cpo>s</cpo>
+       <cpg open="[" close="]"><cpi>x</cpi></cpg>
+       <cpo>&lt;</cpo>
+       <cpb type="number">0</cpb>
+     </cpg>
+     <cpg close=";" breakC="hard"><cpo>return</cpo><cpi>x</cpi></cpg>
+     <cpg close=";" breakC="hard">
+       <cpo>return</cpo>
+       <cpg>
+	 <cpo>find</cpo>
+	 <cpg open="(" close=")">
+	   <cpo>s</cpo>
+	   <cpg open="[" close="]"><cpi>x</cpi></cpg>
+	 </cpg>
+       </cpg>
+     </cpg>
+   </cpg>
+ </pcode>
+ <pcode format="pseudo-code">
+ <cpg>
+   <cpo>procedure</cpo>
+   <cpg indent="0">
+     <cpi>find</cpi>
+     <cpg open="(" close=")"><cpi>x</cpi></cpg>
+     <cpg separator="" Sbreak="hard" Obreak="hard" xref="find-body">
+       <cpg>
+	 <cpo>if</cpo>
+	 <cpd xref="cond">
+	   <cpt>s[x] is negative</cpt>
+	   <cpt xml:lang="de">s[x] ist negativ</cpt>
+	 </cpd>
+       </cpg>
+       <cpg>
+	 <cpo>then</cpo>
+	 <cpo>return</cpo>
+	 <cpi>x</cpi>
+	 <cpc>
+	   <cpt>we are at the root</cpt>
+	   <cpt xml:lang="de">Wir sind in der Wurzel</cpt>
+	 </cpc>
+       </cpg>
+       <cpg>
+	 <cpo>otherwise</cpo>
+	 <cpo>return</cpo>
+	 <cpi>s[x]</cpi>
+	 <cpc> 
+	   <cpt>way to go!</cpt>
+	   <cpt xml:lang="de">auf gehts!</cpt>
+	 </cpc>
+       </cpg>
+     </cpg>
+   </cpg>
+ </cpg>
+</pcode>
+ <rawcode format="java"><![CDATA[
+public int find (int x) {
+    if (s[x] < 0) return x;
+    return  find (s[x]);
+    } 
+]]>
+ </rawcode>
+ </semantics>
+</code>

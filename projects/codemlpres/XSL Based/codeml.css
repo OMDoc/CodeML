@@ -1,0 +1,40 @@
+body {
+	background:#eef;
+	font-family: Verdana, arial, serif;
+	font-size:12px;
+	}
+
+.pCode {
+  	margin:0;
+  	padding:0;}
+div {
+	display:inline;}
+
+#pcode1 ul {
+  	margin:0; padding:0;
+  	background:#eef;
+	background-image:url(ul.gif);
+	background-repeat:repeat-y;
+ }
+#pcode1 li {
+  margin:0px 0 0px 0;
+  padding:2px 2px 2px 32px;
+  list-style-type:none;
+}
+#pcode1 span { /* label */
+  display:block;
+  font-weight:bold;
+  padding:2px;
+  padding-left:18px;
+  background:#CFD4E6;
+  background-image:url(minus.gif);
+  background-repeat:no-repeat;
+}
+
+.cpo {
+color:#000000;}
+.cptype,.cpobuiltin{
+color:#0033CC;
+}
+.cpi{
+color: #339933;}

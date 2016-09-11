@@ -1,0 +1,13 @@
+Make sure the antlr.jar and commons-cli-1.0.jar (in the "classes"
+directory) and this directory are in your CLASSPATH
+
+Use the following commands to compile and test the program:
+
+$ make grammar
+$ make
+$ java Java2CodeML tests/LongTest.java
+
+Java2CodeML generates unformatted XML output. To pretty print it,
+pipe it through xmllint like:
+
+$ java Java2CodeML test/LongTest.java | xmllint --format -

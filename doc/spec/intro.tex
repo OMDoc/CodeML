@@ -1,0 +1,84 @@
+\svnInfo $Id: intro.tex 15 2008-02-22 07:55:51Z kohlhase $
+\svnKeyword $HeadURL: https://svn.omdoc.org/repos/codeml/doc/spec/intro.tex $
+\chapter{Introduction}\label{sec:intro} 
+
+This specification defines the {\indextoo{Code Markup
+    Language}}\index{markup!language! for program code}, or {\codeml}.  {\codeml} is an
+{\xml} application for describing program code and capturing both its structure and
+content. The goal of {\codeml} is to enable program code to be served, received,
+and processed on the World Wide Web, just as HTML has enabled this functionality
+for text.
+  
+The {\em primary purpose} of {\indextoo{program}} code\index{code!program} is as a
+means of communication between the {\indextoo{programmer}} and the machine as a
+vehicle to express programs that can be executed by the machine. For this purpose,
+the field of {\indextoo{computer science}} has developed a multitude of
+{\indextoo{programming language}s}, i.e. {\indextoo{formal
+    language}s}\index{language!formal} with a well-defined structure and fixed
+semantics that allow the programmer to express her operational intentions as
+{\indextoo{texts}} called {\indextoo{program code}}. This code is then interpreted
+by a suitable programs (e.g. a {\indextoo{compiler}}) and translated into native
+instructions to the computer, which are then executed to achieve the desired
+result.
+
+An {\em auxiliary purpose} of program code is to communicate about
+{\indextoo{algorithm}s} and programs between humans, e.g. in {\indextoo{program
+    development}}\index{development!of programs} {\indextoo{documentation}},
+{\indextoo{quality assurance}}, or computer science {\indextoo{education}}. To
+allow humans to cope with the complexities of program code, the program
+development process is supported by a variety of ``intelligent development
+environments''\index{development!environment}, which provide features like code
+{\indextoo{pretty-printing}} (e.g. syntax {\indextoo{highlighting}},
+{\indextoo{indentation}}), {\indextoo{hyper-linking}}, and even higher-level
+techniques like {\indextoo{literate programming}}, or {\indextoo{documentation}}
+{\indextoo{extraction}} from {\indextoo{commented code}}\index{code!commented}.
+
+Unfortunately, this functionality is directly tied to the development environment
+and (usually) to a particular programming language: The program text has to be
+analyzed, and the structural and syntactic information has to be conveyed to the
+user in a dedicated user interface. It is currenly only possible to export the
+functionality of these development environments to the World Wide Web to a very
+limited extent. 
+\begin{itemize}
+\item Web markup formats like {\html} only provide limited primitives for
+  pretty-printing program listings; the possibilities are largely limited to using
+  the
+  {\tt{pre}}\index{element!{\tt{pre}}(html)}\index{html!{\tt{pre}}}\index{pre@{\tt{pre}}
+    (html)} element, {\indextoo{table}s}, or non-breaking spaces {\ttin{\&nbsp;}}.
+  Together with CSS styling this is used for (static, fixed-width) indenting and
+  syntax high-lighting.
+\item Using technologies like {\xsl} formatting objects (which allow
+  flexible-width formatting\ednote{check that they do}) is problematic, since the
+  syntactic and structural information necessary for pretty-printing is implicit
+  in the program structure and a full parser that is needed to reveal it,
+  transcends the possibilities of both {\ttin{javascript}} and and {\xslt} (which
+  are the computational engines built into current browsers). Moreover, an
+  approach based on parsing programming languages would necessitate the
+  availability of gramars for all programming languages. 
+\item As programming languages are optimized for compilation and execution, they
+  do not supply an infrastructure for referencing program fragments, which would
+  be\ednote{continue}
+\end{itemize}
+
+\ednote{say something more, dynamics, local services without
+  program interpretation. This is similar to the situation to math formulae, say
+  something about what we can do with {\mathml}}
+
+The concrete design of the {\codeml} format is inspired by the
+{\mathml}\index{mathml@{\mathml}} (the {\indextoo{Mathematical Markup Language}})
+and {\openmath} format for markup of mathematical formulae\index{markup!language!
+  for mathematical formulae}\index{formulae!mathematical}\index{mathematical
+  formulae} and can be used in conjuction with these formats in a variety of
+document formats.
+
+
+The most relevant related work is probably the {\tt{listings.sty}}
+package~\cite{Heinz:tlp02} for {\LaTeX}, which allows to mark up program listings
+for print presentation.\ednote{say some more, maybe move somewhere else}
+
+\ednote{given an overview over what there already is.}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "codeml"
+%%% End: 

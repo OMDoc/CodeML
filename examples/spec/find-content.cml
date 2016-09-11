@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<code format="multi" xmlns="http://www.mathweb.org/codeml">
+ <ccdef>
+   <symbol id="find">
+     <type>
+       <apply>
+	 <ccsym cd="java.types" name="funtype"/>
+	 <ccsym cd="java.types" name="int"/>
+	 <ccsym cd="java.types" name="int"/>
+       </apply>
+     </type>
+   </symbol>
+   <bind>
+     <ccsym cd="java.proc" name="public-dec"/>
+     <bvar><ccv name="x"/></bvar>
+     <apply>
+       <ccsym cd="java.control" name="if"/>
+       <apply>
+	 <ccsym cd="java.arith" name="less"/>
+	 <apply>
+	   <ccsym cd="java.array" name="select"/>
+	   <ccv name="s"/>
+	   <ccv name="x"/>
+	 </apply>
+	 <ccb type="number">0</ccb>
+       </apply>
+       <apply>
+	 <ccsym cd="java.proc" name="return"/>
+	 <ccv name="x"/>
+       </apply>
+       <apply>
+	 <ccsym cd="java.proc" name="return"/>
+	 <apply>
+	   <ccsym cd="union-find" name="find"/>
+	   <apply>
+	     <ccsym cd="java.array" name="select"/>
+	     <ccv name="s"/>
+	     <ccv name="x"/>
+	   </apply>
+	 </apply>
+       </apply>
+     </apply>
+   </bind>
+ </cdef>

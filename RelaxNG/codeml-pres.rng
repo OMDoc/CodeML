@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  A RelaxNG schema for CodeML (presentation and content of program code)
+  Presentation Module
+  $Id: codeml-pres.rnc 17 2008-08-18 15:37:44Z kohlhase $
+  $HeadURL: https://svn.omdoc.org/repos/codeml/RelaxNG/codeml-pres.rnc $
+  See the documentation and examples at https://www.omdoc.org/codeml
+  Copyright (c) 2008 Michael Kohlhase, Deyan Ginev, Dimitar Misev, Catalin David
+  released under the GNU Public License (GPL) 
+-->
+<grammar ns="http://www.mathweb.org/codeml" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <define name="cp.class">
+    <choice>
+      <ref name="cpg"/>
+      <ref name="cpb"/>
+      <ref name="cpo"/>
+      <ref name="cpi"/>
+      <ref name="cpbr"/>
+      <ref name="cptype"/>
+      <ref name="cpd"/>
+      <ref name="cpc"/>
+      <ref name="cpr"/>
+      <ref name="cpstyle"/>
+    </choice>
+  </define>
+  <define name="cp.common.attrib">
+    <ref name="common.attrib"/>
+    <optional>
+      <attribute name="xref">
+        <data type="anyURI"/>
+      </attribute>
+    </optional>
+  </define>
+  <define name="cp.group.attrib">
+    <optional>
+      <attribute name="open"/>
+    </optional>
+    <optional>
+      <attribute name="close"/>
+    </optional>
+    <optional>
+      <attribute name="separator"/>
+    </optional>
+    <optional>
+      <attribute name="indent"/>
+    </optional>
+    <optional>
+      <attribute name="Obreak"/>
+    </optional>
+    <optional>
+      <attribute name="breakO"/>
+    </optional>
+    <optional>
+      <attribute name="Cbreak"/>
+    </optional>
+    <optional>
+      <attribute name="breakC"/>
+    </optional>
+    <optional>
+      <attribute name="Sbreak"/>
+    </optional>
+    <optional>
+      <attribute name="breakS"/>
+    </optional>
+  </define>
+  <define name="cp.style.attrib">
+    <optional>
+      <attribute name="variant">
+        <data type="token" datatypeLibrary=""/>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="size"/>
+    </optional>
+    <optional>
+      <attribute name="color"/>
+    </optional>
+    <optional>
+      <attribute name="background"/>
+    </optional>
+  </define>
+  <define name="cp.token.attrib">
+    <ref name="cp.common.attrib"/>
+    <ref name="cp.style.attrib"/>
+  </define>
+  <!-- Groups -->
+  <define name="cpg">
+    <element name="cpg">
+      <zeroOrMore>
+        <ref name="cp.class"/>
+      </zeroOrMore>
+      <optional>
+        <ref name="cp.common.attrib"/>
+      </optional>
+      <optional>
+        <ref name="cp.group.attrib"/>
+      </optional>
+    </element>
+  </define>
+  <!-- basic language objects -->
+  <define name="cpb">
+    <element name="cpb">
+      <text/>
+      <optional>
+        <ref name="cp.token.attrib"/>
+      </optional>
+      <attribute name="type">
+        <data type="NCName"/>
+      </attribute>
+    </element>
+  </define>
+  <!-- operators -->
+  <define name="cpo.types">
+    <choice>
+      <value>built-in</value>
+      <value>imported</value>
+      <value>defined</value>
+      <value>definiens</value>
+      <value>recursive-call</value>
+    </choice>
+  </define>
+  <define name="cpo">
+    <element name="cpo">
+      <text/>
+      <ref name="cp.token.attrib"/>
+      <optional>
+        <attribute name="type">
+          <ref name="cpo.types"/>
+        </attribute>
+      </optional>
+    </element>
+  </define>
+  <!-- identifiers -->
+  <define name="cpi">
+    <element name="cpi">
+      <text/>
+      <ref name="cp.token.attrib"/>
+    </element>
+  </define>
+  <!-- linebreaks -->
+  <define name="cpbr">
+    <element name="cpbr">
+      <ref name="cp.common.attrib"/>
+    </element>
+  </define>
+  <!-- datatypes -->
+  <define name="cptype">
+    <element name="cptype">
+      <text/>
+      <ref name="cp.common.attrib"/>
+    </element>
+  </define>
+  <!-- multilingual text -->
+  <define name="cpt">
+    <element name="cpt">
+      <text/>
+      <ref name="cp.common.attrib"/>
+      <ref name="cp.style.attrib"/>
+      <ref name="xml.lang.attrib"/>
+    </element>
+  </define>
+  <!-- descriptions -->
+  <define name="cpd">
+    <element name="cpd">
+      <oneOrMore>
+        <ref name="cpt"/>
+      </oneOrMore>
+      <ref name="cp.common.attrib"/>
+    </element>
+  </define>
+  <!-- comments -->
+  <define name="cpc">
+    <element name="cpc">
+      <oneOrMore>
+        <ref name="cpt"/>
+      </oneOrMore>
+      <ref name="cp.common.attrib"/>
+    </element>
+  </define>
+  <!-- raw code -->
+  <define name="cpr">
+    <element name="cpr">
+      <text/>
+      <ref name="cp.common.attrib"/>
+    </element>
+  </define>
+  <!-- style information -->
+  <define name="cpstyle">
+    <element name="cpstyle">
+      <ref name="cp.class"/>
+      <ref name="cp.common.attrib"/>
+      <ref name="cp.style.attrib"/>
+    </element>
+  </define>
+</grammar>
